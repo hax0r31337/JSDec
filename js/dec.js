@@ -400,3 +400,49 @@ function jjdecode(t) {
 if(jjvalue!=""){return jjvalue;}
 else{return "Failed!(0x04)\nGiven code is not encoded as jjencode."}
 }
+function decjsf(js) {
+    function patternCreator(prefix, postfix) {
+        replacedPrefix = prefix.replace(/[\[\]\(\)\+\!]/g, '\\$&');
+        replacedPostfix = postfix.replace(/[\[\]\(\)\+\!]/g, '\\$&');
+
+        return replacedPrefix + '(.*)' + replacedPostfix;
+    }
+
+    function isMatching(string, pattern) {
+        var result = string.match(new RegExp(pattern));
+        if (result) return result[1];
+
+        return null;
+    }
+    function decodejsf() {
+        var prefix = '[][' + JSFuck.encode('fill') + ']' + '[' + JSFuck.encode('constructor') + ']' + '(' + JSFuck.encode('return eval') + ')()(';
+        var postfix = ')';
+        var result = isMatching(code, patternCreator(prefix, postfix));
+
+        if (result) {
+            code = eval(result);
+            return;
+        }
+
+        prefix = '[][' + JSFuck.encode('fill') + ']' + '[' + JSFuck.encode('constructor') + '](';
+        postfix = ')()';
+        result = isMatching(code, patternCreator(prefix, postfix));
+
+        if (result) {
+            code = eval(result);
+            return;
+        }
+
+        prefix = '[][' + JSFuck.encode('filter') + ']' + '[' + JSFuck.encode('constructor') + '](';
+        postfix = ')()';
+        result = isMatching(code, patternCreator(prefix, postfix));
+
+        if (result) {
+            code = eval(result);
+            return;
+        }
+        code = eval(code);
+    }
+    try{var code = js;decodejsf();return code}
+    catch(e){return "Failed(0x06)\n"+e}
+}
