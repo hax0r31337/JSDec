@@ -118,13 +118,13 @@
           else if(vue.nowenc==vue.enc[4]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
         },
         cres:function(){
-          rcp.copy(document.getElementById("encres").innerHTML)
+          rcp.copy(document.getElementById("encres").value)
         },
         dres:function(){
-          var blob = new Blob([document.getElementById("encres").innerHTML], {type: "text/plain;charset=utf-8"});saveAs(blob, "JSDec_"+rand_str(6)+".js")
+          var blob = new Blob([document.getElementById("encres").value], {type: "text/plain;charset=utf-8"});saveAs(blob, "JSDec_"+rand_str(6)+".js")
         },
         bres:function(){
-          document.getElementById("encres").innerHTML=js_beautify(document.getElementById("encres").innerHTML,1,'\t')
+          document.getElementById("encres").value=js_beautify(document.getElementById("encres").value,1,'\t')
         },
         nowenc:null,
         enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck"],
