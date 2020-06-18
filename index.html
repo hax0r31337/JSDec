@@ -49,9 +49,15 @@
       </v-app-bar>
       <v-main>
 <template>
-  <v-container fluid>
-    <v-textarea clearable filled id="needenc" label="输入被混淆的JavaScript文件"></v-textarea>
-  </v-container>
+  <div style="height: 3%;"></div>
+    <v-card
+    class="mx-auto"
+    max-width="95%"
+    height="300px"
+    outlined
+  >
+    <textarea placeholder="输入被混淆的JavaScript文件" id="needenc" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
+  </v-card>
   <v-container>
 <v-select 
   v-model="nowenc"
@@ -67,7 +73,7 @@
       </v-list-tile-content>
     </template>
 </v-select>
-    <v-btn class="ma-2" color="primary" v-on:click="sdec">开始破解</v-btn><v-btn class="ma-2" color="primary" v-on:click="cres">复制结果</v-btn><v-btn class="ma-2" color="primary" v-on:click="dres">下载结果</v-btn><v-btn class="ma-2" color="primary" v-on:click="bres">美化结果</v-btn>
+    <v-btn class="ma-2" color="primary" v-on:click="sdec">开始破解</v-btn><v-btn class="ma-2" color="primary" v-on:click="ujs">上传文件</v-btn><v-btn class="ma-2" color="primary" v-on:click="cres">复制结果</v-btn><v-btn class="ma-2" color="primary" v-on:click="dres">下载结果</v-btn><v-btn class="ma-2" color="primary" v-on:click="bres">美化结果</v-btn>
   </v-container>
   <v-card
     class="mx-auto"
@@ -75,7 +81,7 @@
     height="300px"
     outlined
   >
-<textarea id="encres" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
+<textarea placeholder="破解结果" id="encres" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
   </v-card>
 </template>
       </v-main>
@@ -90,6 +96,7 @@
     </v-app>
 </div>
 <div id="rcp"></div>
+<input type="file" name="file" id="fileId" style="display: none;" />
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   <script>
@@ -120,6 +127,9 @@
         cres:function(){
           rcp.copy(document.getElementById("encres").value)
         },
+        ujs:function(){
+          document.getElementById("fileId").click();
+        },
         dres:function(){
           var blob = new Blob([document.getElementById("encres").value], {type: "text/plain;charset=utf-8"});saveAs(blob, "JSDec_"+rand_str(6)+".js")
         },
@@ -139,6 +149,19 @@
       }
     })
     var rcp=EasyCopy.create("rcp")
+document.getElementById("fileId").addEventListener('change',
+function() {
+    var objFile = document.getElementById("fileId");
+    var files = document.getElementById('fileId').files;
+    if (files.length != 0) {
+        var reader = new FileReader();
+        reader.readAsText(files[0], "UTF-8");
+        reader.onload = function(evt) {
+            document.getElementById("needenc").value=evt.target.result;
+        }
+    }
+
+})
   </script>
 </body>
 </html>
