@@ -123,6 +123,8 @@
           else if(vue.nowenc==vue.enc[2]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.enc[3]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.enc[4]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.enc[5]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.enc[6]){decsojsonp(document.getElementById("needenc").value)}
         },
         cres:function(){
           rcp.copy(document.getElementById("encres").value)
@@ -137,7 +139,7 @@
           document.getElementById("encres").value=js_beautify(document.getElementById("encres").value,1,'\t')
         },
         nowenc:null,
-        enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck"],
+        enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版"],
         listitems:[
         {fg:false,fgt:"功能"},
         {fg:true,icon:"mdi-home",text:"JS解码",onc:function(){location.href="./index.html"}},

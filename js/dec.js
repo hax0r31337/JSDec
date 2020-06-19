@@ -3,9 +3,48 @@ try{
 var s=jsf.indexOf("eval"),f=jsf.lastIndexOf(")");
 eval("jsf=String"+jsf.substring(s+4,f+1))
 }catch(e){
-    return "Failed(0x03)\n"+e
+    return "Failed\n"+e
 }
 return jsf
+}
+function decsojson4(jsf) {
+    var head="['sojson.v4']"
+    if(jsf.indexOf(head)==-1){return "Failed!\nGiven code is not encoded as Sojson v4."}
+    args=jsf.substring(240,jsf.length-58).split(/[a-zA-Z]{1,}/)
+    var str="";
+    for(var i=0;i<args.length;i++){
+        str+=String.fromCharCode(args[i])
+    }
+    return str
+}
+function decsojsonp(jsf) {
+function th(js,n,sz){
+    var s=js.split("")
+    if(js.indexOf(n)==-1){
+        document.getElementById("encres").value=js
+    }
+    else{
+        var c=js.indexOf(n)+n.length;
+        while(true){
+            c++;
+            if(s[c]=="]"){
+                break;
+            }
+        }
+        var jstmp=js.substring(js.indexOf(n),c+1),count=jstmp.substring(jstmp.indexOf('['),c+1)
+        eval("var countn=sz"+count)
+        js=js.replace(jstmp,"'"+countn+"'")
+        th(js,n,sz)
+    }
+}
+    var head="var __encode ='sojson.com"
+    if(jsf.indexOf(head)==-1){return "Failed!\nGiven code is not encoded as Sojson Primium."}
+    jsf=jsf.substring(327,jsf.lastIndexOf("(function(_0x"))
+    var sz=[],szn=jsf.substring(4,jsf.indexOf("="))
+    eval(jsf.substring(0,jsf.indexOf(";")))
+    var jsfi=jsf.substring(jsf.indexOf(";")+1,jsf.length)
+    eval("for(var i=0;i<"+szn+".length-5;i++){sz[i]="+szn+"[i]}")
+    th(jsfi,szn,sz)
 }
 function aadecode(text){
     var evalPreamble = "(\uFF9F\u0414\uFF9F) ['_'] ( (\uFF9F\u0414\uFF9F) ['_'] (";
@@ -17,10 +56,10 @@ function aadecode(text){
         return "";
     }
     if (text.lastIndexOf(evalPreamble) < 0) {
-        return "Failed!(0x01)\nGiven code is not encoded as aaencode.";
+        return "Failed!\nGiven code is not encoded as aaencode.";
     }
     if (text.lastIndexOf(evalPostamble) != text.length - evalPostamble.length) {
-        return "Failed!(0x02)\nGiven code is not encoded as aaencode.";
+        return "Failed!\nGiven code is not encoded as aaencode.";
     }
 
     var decodingScript = text.replace(evalPreamble, decodePreamble).replace(evalPostamble, decodePostamble);
@@ -398,7 +437,7 @@ function jjdecode(t) {
         break;
     }
 if(jjvalue!=""){return jjvalue;}
-else{return "Failed!(0x04)\nGiven code is not encoded as jjencode."}
+else{return "Failed!\nGiven code is not encoded as jjencode."}
 }
 function decjsf(js) {
     function patternCreator(prefix, postfix) {
@@ -444,5 +483,5 @@ function decjsf(js) {
         code = eval(code);
     }
     try{var code = js;decodejsf();return code}
-    catch(e){return "Failed(0x06)\n"+e}
+    catch(e){return "Failed\n"+e}
 }
