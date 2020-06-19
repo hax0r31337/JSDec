@@ -12,10 +12,11 @@
   <script src="./js/jsbeautify.js"></script>
   <script src="./js/dec.js"></script>
   <script src="./js/jsfuck.js"></script>
+  <link href="./css/font.css" rel="stylesheet">
 </head>
 <body>
 <div id="app">
-  <v-app id="inspire">
+  <v-app id="inspire" class="saof">
       <v-navigation-drawer
         v-model="drawer"
         app
@@ -45,7 +46,21 @@
         dark
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>JSDec</v-toolbar-title>
+        <v-toolbar-title>JSDec</v-toolbar-title><v-spacer></v-spacer>
+            <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn color="#FFFFFF" dark v-bind="attrs" v-on="on" text><v-icon left>mdi-translate</v-icon>{{ lang.nowlang }}</v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(item, index) in Langs"
+          :key="index"
+          @click="item.onc"
+        >
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
       </v-app-bar>
       <v-main>
 <template>
@@ -56,13 +71,13 @@
     height="300px"
     outlined
   >
-    <textarea placeholder="输入被混淆的JavaScript文件" id="needenc" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
+    <textarea placeholder="Put the encoded JavaScript in" id="needenc" class="codef" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
   </v-card>
   <v-container>
 <v-select 
   v-model="nowenc"
-  label="选择处理类型"
-  :items="enc"
+  label="Plz choose a type of process"
+  :items="lang.enc"
  >
   <template
     slot="item" 
@@ -73,7 +88,7 @@
       </v-list-tile-content>
     </template>
 </v-select>
-    <v-btn class="ma-2" color="primary" v-on:click="sdec">开始破解</v-btn><v-btn class="ma-2" color="primary" v-on:click="ujs">上传文件</v-btn><v-btn class="ma-2" color="primary" v-on:click="cres">复制结果</v-btn><v-btn class="ma-2" color="primary" v-on:click="dres">下载结果</v-btn><v-btn class="ma-2" color="primary" v-on:click="bres">美化结果</v-btn>
+    <v-btn class="ma-2" color="primary" v-on:click="sdec">{{ lang.startdec }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="ujs">{{ lang.upload }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="cres">{{ lang.copyres }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="dres">{{ lang.downres }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="bres">{{ lang.beaures }}</v-btn>
   </v-container>
   <v-card
     class="mx-auto"
@@ -81,7 +96,7 @@
     height="300px"
     outlined
   >
-<textarea placeholder="破解结果" id="encres" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
+<textarea placeholder="Decode Result" id="encres" class="codef" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
   </v-card>
 </template>
       </v-main>
@@ -100,6 +115,16 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   <script>
+function setCookie(name,value){
+    document.cookie = name + "="+ escape (value);
+}
+function getCookie(name){
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
     const vuetify = new Vuetify({
   theme: {
     themes: {
@@ -109,22 +134,29 @@
     },
   },
 })
+if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
+if(getCookie("lang")=="zh_cn"){
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型",copyres:"复制结果",beaures:"美化结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版"]}
+}else if(getCookie("lang")=="en_us"){
+var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process",copyres:"Copy Result",beaures:"Beautify Result",downres:"Download Result",upload:"Upload",startdec:"Decode",enc:["Beautify","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium"]}
+}
     var vue= new Vue({
       el: '#app',
       vuetify: new Vuetify(),
       data:{
+        lang:thislang,
         drawer: false,
         fullyear: new Date().getFullYear(),
         item:0,
         sdec:function(){
-          if(vue.nowenc==null){}
-          else if(vue.nowenc==vue.enc[0]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.enc[1]){document.getElementById("encres").value=uneval(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.enc[2]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.enc[3]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.enc[4]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.enc[5]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.enc[6]){decsojsonp(document.getElementById("needenc").value)}
+          if(vue.nowenc==null){document.getElementById("encres").value=thislang.choosetyp}
+          else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[1]){document.getElementById("encres").value=uneval(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[2]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[3]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[4]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[5]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[6]){decsojsonp(document.getElementById("needenc").value)}
         },
         cres:function(){
           rcp.copy(document.getElementById("encres").value)
@@ -139,14 +171,17 @@
           document.getElementById("encres").value=js_beautify(document.getElementById("encres").value,1,'\t')
         },
         nowenc:null,
-        enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版"],
         listitems:[
-        {fg:false,fgt:"功能"},
-        {fg:true,icon:"mdi-home",text:"JS解码",onc:function(){location.href="./index.html"}},
-        {fg:false,fgt:"关于"},
-        {fg:true,icon:"mdi-history",text:"更新日志",onc:function(){location.href="./upd.html"}},
+        {fg:false,fgt:thislang.tools},
+        {fg:true,icon:"mdi-home",text:thislang.jsdecode,onc:function(){location.href="./index.html"}},
+        {fg:false,fgt:thislang.about},
+        {fg:true,icon:"mdi-history",text:thislang.updlog,onc:function(){location.href="./upd.html"}},
         // {fg:true,icon:"mdi-heart-flash",text:"赞助作者",onc:function(){location.href="./donate.html"}},
-        {fg:true,icon:"mdi-github",text:"Github",onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
+        {fg:true,icon:"mdi-github",text:thislang.gh,onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
+        ],
+        Langs:[
+        {title:"中文(简体)",onc:function(){setCookie("lang=zh_cn");window.location.replace("./index.html")}},
+        {title:"EN(US)",onc:function(){setCookie("lang=en_us;");window.location.replace("./index.html")}}
         ]
       }
     })

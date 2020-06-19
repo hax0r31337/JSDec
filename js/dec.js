@@ -38,7 +38,7 @@ function th(js,n,sz){
     }
 }
     var head="var __encode ='sojson.com"
-    if(jsf.indexOf(head)==-1){return "Failed!\nGiven code is not encoded as Sojson Primium."}
+    if(jsf.indexOf(head)==-1){document.getElementById("encres").value="Failed!\nGiven code is not encoded as Sojson Primium.";return}
     jsf=jsf.substring(327,jsf.lastIndexOf("(function(_0x"))
     var sz=[],szn=jsf.substring(4,jsf.indexOf("="))
     eval(jsf.substring(0,jsf.indexOf(";")))

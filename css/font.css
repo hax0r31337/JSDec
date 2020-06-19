@@ -1,0 +1,14 @@
+@font-face {
+font-family:SAOF;
+src:url("https://cdn.jsdelivr.net/gh/liulihaocai/JSDec/res/SAO_Regular.ttf");
+}
+@font-face {
+font-family:CodeF;
+src:url("https://cdn.jsdelivr.net/gh/liulihaocai/JSDec/res/AndaleMo.ttf");
+}
+.saof{
+  font-family:SAOF;
+}
+.codef{
+  font-family:CodeF;
+}

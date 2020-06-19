@@ -6,10 +6,11 @@
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="./css/font.css" rel="stylesheet">
 </head>
 <body>
 <div id="app">
-  <v-app id="inspire">
+  <v-app id="inspire" class="saof">
       <v-navigation-drawer
         v-model="drawer"
         app
@@ -39,7 +40,21 @@
         dark
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>JSDec</v-toolbar-title>
+        <v-toolbar-title>JSDec</v-toolbar-title><v-spacer></v-spacer>
+            <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn color="#FFFFFF" dark v-bind="attrs" v-on="on" text><v-icon left>mdi-translate</v-icon>{{ lang.nowlang }}</v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(item, index) in Langs"
+          :key="index"
+          @click="item.onc"
+        >
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
       </v-app-bar>
       <v-main>
 <div v-for="item in upl">
@@ -68,26 +83,47 @@
     },
   },
 })
+function setCookie(name,value){
+    document.cookie = name + "="+ escape (value);
+}
+function getCookie(name){
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
+if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
+if(getCookie("lang")=="zh_cn"){
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",upd13:"支持破解Sojson v4及Sojson高级版<br>多语言支持",upd12:"性能优化<br>支持上传文件",upd11:"修复bug<br>支持美化js，破解JSF*ck，一键美化破解结果",upd10:"第一个版本，支持eval/aaencode/jjencode的js解密"}
+}else if(getCookie("lang")=="en_us"){
+var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",upd13:"Sojson v4 and Sojson Premium decode supported<br>Multi Language supported",upd12:"optimization<br>Supported upload",upd11:"fix bugs<br>JS_Beautify and decode JSF*ck supported",upd10:"first version<br>eval/aaencode/jjencode decode supported"}
+}
     var vue= new Vue({
       el: '#app',
       vuetify: new Vuetify(),
       data:{
+        lang:thislang,
         drawer: false,
         fullyear: new Date().getFullYear(),
         item:1,
         upl:[
-        {ver:'v1.3',date:'2020-06-19',tell:"支持破解Sojson v4及Sojson高级版"},
-        {ver:'v1.2',date:'2020-06-18',tell:"性能优化<br>支持上传文件"},
-        {ver:'v1.1',date:'2020-06-17',tell:"修复bug<br>支持美化js，破解JSF*ck，一键美化破解结果"},
-        {ver:'v1.0',date:'2020-06-17',tell:"第一个版本，支持eval/aaencode/jjencode的js解密"},
+        {ver:'v1.3',date:'2020-06-19',tell:thislang.upd13},
+        {ver:'v1.2',date:'2020-06-18',tell:thislang.upd12},
+        {ver:'v1.1',date:'2020-06-17',tell:thislang.upd11},
+        {ver:'v1.0',date:'2020-06-17',tell:thislang.upd10},
         ],
         listitems:[
-        {fg:false,fgt:"功能"},
-        {fg:true,icon:"mdi-home",text:"JS解码",onc:function(){location.href="./index.html"}},
-        {fg:false,fgt:"关于"},
-        {fg:true,icon:"mdi-history",text:"更新日志",onc:function(){location.href="./upd.html"}},
+        {fg:false,fgt:thislang.tools},
+        {fg:true,icon:"mdi-home",text:thislang.jsdecode,onc:function(){location.href="./index.html"}},
+        {fg:false,fgt:thislang.about},
+        {fg:true,icon:"mdi-history",text:thislang.updlog,onc:function(){location.href="./upd.html"}},
         // {fg:true,icon:"mdi-heart-flash",text:"赞助作者",onc:function(){location.href="./donate.html"}},
-        {fg:true,icon:"mdi-github",text:"Github",onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
+        {fg:true,icon:"mdi-github",text:thislang.gh,onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
+        ],
+        Langs:[
+        {title:"中文(简体)",onc:function(){setCookie("lang=zh_cn");window.location.replace("./index.html")}},
+        {title:"EN(US)",onc:function(){setCookie("lang=en_us;");window.location.replace("./index.html")}}
         ]
       }
     })
