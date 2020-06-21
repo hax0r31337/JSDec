@@ -137,9 +137,9 @@ function getCookie(name){
 })
 if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
 if(getCookie("lang")=="zh_cn"){
-var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型",copyres:"复制结果",beaures:"美化结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",l1:"YSCTC云主机",enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版"],al:{t:"JSDec即将更新JS美化功能",success:true}}
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型",copyres:"复制结果",beaures:"美化结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",l1:"YSCTC云主机",enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版"],al:{t:"欢迎使用～",info:true}}
 }else if(getCookie("lang")=="en_us"){
-var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process",copyres:"Copy Result",beaures:"Beautify Result",downres:"Download Result",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",enc:["Beautify","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium"],al:{t:"JSDec already to update js-beautify!",success:true}}
+var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process",copyres:"Copy Result",beaures:"Beautify Result",downres:"Download Result",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",enc:["Beautify","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium"],al:{t:"JSDec EN(us) language support is not well",warning:true}}
 }
     var vue= new Vue({
       el: '#app',
@@ -151,7 +151,7 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         item:0,
         sdec:function(){
           if(vue.nowenc==null){document.getElementById("encres").value=thislang.choosetyp}
-          else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value,{unescape_strings:true})}
           else if(vue.nowenc==vue.lang.enc[1]){document.getElementById("encres").value=uneval(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.lang.enc[2]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.lang.enc[3]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
@@ -180,7 +180,7 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         // {fg:true,icon:"mdi-heart-flash",text:"赞助作者",onc:function(){location.href="./donate.html"}},
         {fg:true,icon:"mdi-github",text:thislang.gh,onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
         {fg:false,fgt:thislang.links},
-        {fg:true,icon:"mdi-cloud",text:thislang.l1,onc:function(){window.open("http://ysss2.q7ds.com/")}},
+        {fg:true,icon:"mdi-thumb-up-outline",text:thislang.l1,onc:function(){window.open("http://ysss2.q7ds.com/")}},
         ],
         Langs:[
         {title:"中文(简体)",onc:function(){setCookie("lang=zh_cn;");window.location.replace("./index.html")}},
