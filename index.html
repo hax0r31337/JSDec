@@ -71,6 +71,10 @@
     height="300px"
     outlined
   >
+    <v-alert dense v-if="lang.al.error" border="left" type="error" close-icon="mdi-close" dismissible>{{ lang.al.t }}</v-alert>
+    <v-alert dense v-if="lang.al.info" border="left" type="info" close-icon="mdi-close" dismissible>{{ lang.al.t }}</v-alert>
+    <v-alert dense v-if="lang.al.success" border="left" type="success" close-icon="mdi-close" dismissible>{{ lang.al.t }}</v-alert>
+    <v-alert dense v-if="lang.al.warning" border="left" type="warning" close-icon="mdi-close" dismissible>{{ lang.al.t }}</v-alert>
     <textarea placeholder="Put the encoded JavaScript in" id="needenc" class="codef" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
   </v-card>
   <v-container>
@@ -136,9 +140,9 @@ function getCookie(name){
 })
 if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
 if(getCookie("lang")=="zh_cn"){
-var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型",copyres:"复制结果",beaures:"美化结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版"]}
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型",copyres:"复制结果",beaures:"美化结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",l1:"YSCTC云主机",enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版"],al:{t:"JSDec即将更新JS美化功能",success:true}}
 }else if(getCookie("lang")=="en_us"){
-var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process",copyres:"Copy Result",beaures:"Beautify Result",downres:"Download Result",upload:"Upload",startdec:"Decode",enc:["Beautify","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium"]}
+var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process",copyres:"Copy Result",beaures:"Beautify Result",downres:"Download Result",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",enc:["Beautify","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium"],al:{t:"JSDec already to update js-beautify!",success:true}}
 }
     var vue= new Vue({
       el: '#app',
@@ -178,6 +182,8 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         {fg:true,icon:"mdi-history",text:thislang.updlog,onc:function(){location.href="./upd.html"}},
         // {fg:true,icon:"mdi-heart-flash",text:"赞助作者",onc:function(){location.href="./donate.html"}},
         {fg:true,icon:"mdi-github",text:thislang.gh,onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
+        {fg:false,fgt:thislang.links},
+        {fg:true,icon:"mdi-cloud",text:thislang.l1,onc:function(){window.open("http://ys2.abcdsw.xyz/")}},
         ],
         Langs:[
         {title:"中文(简体)",onc:function(){setCookie("lang=zh_cn;");window.location.replace("./index.html")}},
