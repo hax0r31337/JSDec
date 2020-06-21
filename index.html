@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <script src="https://cdn.jsdelivr.net/gh/liulihaocai/EasyCopy/copy.min.js"></script>
   <script src="https://cdn.bootcss.com/FileSaver.js/1.3.8/FileSaver.min.js"></script>
-  <script src="./js/jsbeautify.js"></script>
+  <script src="./js/beautify.js"></script>
   <script src="./js/dec.js"></script>
   <script src="./js/jsfuck.js"></script>
   <link href="./css/font.css" rel="stylesheet">
@@ -65,16 +65,13 @@
       <v-main>
 <template>
   <div style="height: 3%;"></div>
-    <v-card
-    class="mx-auto"
-    max-width="95%"
-    height="300px"
-    outlined
-  >
+  <v-card max-width="95%" class="mx-auto">
     <v-alert dense v-if="lang.al.error" border="left" type="error" close-icon="mdi-close" dismissible>{{ lang.al.t }}</v-alert>
     <v-alert dense v-if="lang.al.info" border="left" type="info" close-icon="mdi-close" dismissible>{{ lang.al.t }}</v-alert>
     <v-alert dense v-if="lang.al.success" border="left" type="success" close-icon="mdi-close" dismissible>{{ lang.al.t }}</v-alert>
     <v-alert dense v-if="lang.al.warning" border="left" type="warning" close-icon="mdi-close" dismissible>{{ lang.al.t }}</v-alert>
+  </v-card>
+    <v-card class="mx-auto" max-width="95%" height="300px" outlined>
     <textarea placeholder="Put the encoded JavaScript in" id="needenc" class="codef" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
   </v-card>
   <v-container>
@@ -183,7 +180,7 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         // {fg:true,icon:"mdi-heart-flash",text:"赞助作者",onc:function(){location.href="./donate.html"}},
         {fg:true,icon:"mdi-github",text:thislang.gh,onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
         {fg:false,fgt:thislang.links},
-        {fg:true,icon:"mdi-cloud",text:thislang.l1,onc:function(){window.open("http://ys2.abcdsw.xyz/")}},
+        {fg:true,icon:"mdi-cloud",text:thislang.l1,onc:function(){window.open("http://ysss2.q7ds.com/")}},
         ],
         Langs:[
         {title:"中文(简体)",onc:function(){setCookie("lang=zh_cn;");window.location.replace("./index.html")}},

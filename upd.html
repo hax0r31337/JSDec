@@ -96,9 +96,9 @@ function getCookie(name){
 }
 if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
 if(getCookie("lang")=="zh_cn"){
-var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",upd13:"支持破解Sojson v4及Sojson高级版<br>多语言支持",upd12:"性能优化<br>支持上传文件",upd11:"修复bug<br>支持美化js，破解JSF*ck，一键美化破解结果",upd10:"第一个版本，支持eval/aaencode/jjencode的js解密"}
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",upd13:"支持破解Sojson v4及Sojson高级版<br>多语言支持",upd12:"性能优化<br>支持上传文件",upd11:"修复bug<br>支持美化js，破解JSF*ck，一键美化破解结果",upd10:"第一个版本，支持eval/aaencode/jjencode的js解密",links:"友链",l1:"YSCTC云主机"}
 }else if(getCookie("lang")=="en_us"){
-var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",upd13:"Sojson v4 and Sojson Premium decode supported<br>Multi Language supported",upd12:"optimization<br>Supported upload",upd11:"fix bugs<br>JS_Beautify and decode JSF*ck supported",upd10:"first version<br>eval/aaencode/jjencode decode supported"}
+var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",upd13:"Sojson v4 and Sojson Premium decode supported<br>Multi Language supported",links:"Links",l1:"YSCTC Cloud",upd12:"optimization<br>Supported upload",upd11:"fix bugs<br>JS_Beautify and decode JSF*ck supported",upd10:"first version<br>eval/aaencode/jjencode decode supported"}
 }
 document.getElementById("updlog").innerHTML=thislang.updlog+"(JSDec) - Liulihaocai"
     var vue= new Vue({
@@ -122,6 +122,8 @@ document.getElementById("updlog").innerHTML=thislang.updlog+"(JSDec) - Liulihaoc
         {fg:true,icon:"mdi-history",text:thislang.updlog,onc:function(){location.href="./upd.html"}},
         // {fg:true,icon:"mdi-heart-flash",text:"赞助作者",onc:function(){location.href="./donate.html"}},
         {fg:true,icon:"mdi-github",text:thislang.gh,onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
+        {fg:false,fgt:thislang.links},
+        {fg:true,icon:"mdi-cloud",text:thislang.l1,onc:function(){window.open("http://ysss2.q7ds.com/")}},
         ],
         Langs:[
         {title:"中文(简体)",onc:function(){setCookie("lang=zh_cn;");window.location.replace("./upd.html")}},
