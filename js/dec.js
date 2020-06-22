@@ -17,34 +17,68 @@ function decsojson4(jsf) {
     }
     return str
 }
-function decsojsonp(jsf) {
-function th(js,n,sz){
-    var s=js.split("")
-    if(js.indexOf(n)==-1){
-        document.getElementById("encres").value=js
-    }
-    else{
-        var c=js.indexOf(n)+n.length;
-        while(true){
-            c++;
-            if(s[c]=="]"){
-                break;
+function obdec_default(jsf) {
+    if(jsf.indexOf('_0x')==-1){return "Failed!\nGiven code is not encoded as JS-Obfuscator.";}
+    function sandbox(cjs,bjs,name) {
+    function th(js,n){
+        var s=js.split("")
+        if(js.indexOf(n)==-1){result=js;return;}
+        else{
+            var c=js.indexOf(n)+n.length;
+            while(true){
+                c++;
+                if(s[c]==")"){
+                    break;
+                }
             }
+            var jstmp=js.substring(js.indexOf(n),c+1)
+            eval("var countn="+jstmp)
+            js=js.replace(jstmp,"'"+countn+"'")
+            th(js,n)
         }
-        var jstmp=js.substring(js.indexOf(n),c+1),count=jstmp.substring(jstmp.indexOf('['),c+1)
-        eval("var countn=sz"+count)
-        js=js.replace(jstmp,"'"+countn+"'")
-        th(js,n,sz)
     }
+        eval(cjs);
+        th(bjs,name);return;
+    }
+    var head1,result,head2=jsf.substring(jsf.indexOf("));var")+3,jsf.length),head3=head2.substring(head2.indexOf(")")+1,head2.length).split(""),c=0,pos,ch=false;
+    for(var i=0;i<head3.length;i++){
+        if(head3[i]=="{"){c++}
+        else if(head3[i]=="}"){c--}
+        if(c==0&&ch==false){ch=true;pos=i;}
+    }
+    head1=head2.substring(4,head2.indexOf("="));
+    head3=jsf.substring(0,pos+head2.indexOf(")")+6+jsf.indexOf("));var"));
+    head2=jsf.substring(pos+head2.indexOf(")")+6+jsf.indexOf("));var"),jsf.length)
+    sandbox(head3,head2,head1)
+    return result
 }
-    var head="var __encode ='sojson.com"
-    if(jsf.indexOf(head)==-1){document.getElementById("encres").value="Failed!\nGiven code is not encoded as Sojson Primium.";return}
+function decsojsonp(jsf) {
+    function th(js,n,sz){
+        var s=js.split("")
+        if(js.indexOf(n)==-1){result=js;return}
+        else{
+           var c=js.indexOf(n)+n.length;
+           while(true){
+               c++;
+               if(s[c]=="]"){
+                    break;
+                }
+           }
+            var jstmp=js.substring(js.indexOf(n),c+1),count=jstmp.substring(jstmp.indexOf('['),c+1)
+            eval("var countn=sz"+count)
+            js=js.replace(jstmp,"'"+countn+"'")
+            th(js,n,sz)
+        }
+    }
+    var head="var __encode ='sojson.com",result;
+    if(jsf.indexOf(head)==-1){return "Failed!\nGiven code is not encoded as Sojson Primium."}
     jsf=jsf.substring(327,jsf.lastIndexOf("(function(_0x"))
     var sz=[],szn=jsf.substring(4,jsf.indexOf("="))
     eval(jsf.substring(0,jsf.indexOf(";")))
     var jsfi=jsf.substring(jsf.indexOf(";")+1,jsf.length)
     eval("for(var i=0;i<"+szn+".length-5;i++){sz[i]="+szn+"[i]}")
     th(jsfi,szn,sz)
+    return result;
 }
 function aadecode(text){
     var evalPreamble = "(\uFF9F\u0414\uFF9F) ['_'] ( (\uFF9F\u0414\uFF9F) ['_'] (";

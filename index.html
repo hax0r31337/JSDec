@@ -99,6 +99,7 @@
   >
 <textarea placeholder="Decode Result" id="encres" class="codef" style="width: 100%;cursor: pointer;height: 300px;border: solid 0px;outline:none;resize: none;"></textarea>
   </v-card>
+  <div style="height:50px;"></div>
 </template>
       </v-main>
       <v-footer
@@ -126,24 +127,15 @@ function getCookie(name){
     else
         return null;
 }
-    const vuetify = new Vuetify({
-  theme: {
-    themes: {
-      light: {
-        primary: "#009688",
-      },
-    },
-  },
-})
 if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
 if(getCookie("lang")=="zh_cn"){
-var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型",copyres:"复制结果",beaures:"美化结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",l1:"YSCTC云主机",enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版"],al:{t:"欢迎使用～",info:true}}
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型",copyres:"复制结果",beaures:"美化结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",l1:"YSCTC云主机",enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版","JavaScript Obfuscator(普通版)"],al:{t:"欢迎使用～",info:true}}
 }else if(getCookie("lang")=="en_us"){
-var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process",copyres:"Copy Result",beaures:"Beautify Result",downres:"Download Result",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",enc:["Beautify","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium"],al:{t:"JSDec EN(us) language support is not well",warning:true}}
+var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process",copyres:"Copy Result",beaures:"Beautify Result",downres:"Download Result",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",enc:["Beautify","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium","JavaScript Obfuscator(Default)"],al:{t:"JSDec EN(us) language support is not well",warning:true}}
 }
     var vue= new Vue({
       el: '#app',
-      vuetify: new Vuetify(),
+      vuetify: new Vuetify({theme:{themes:{light:{primary:"#009688",},},},}),
       data:{
         lang:thislang,
         drawer: false,
@@ -157,7 +149,8 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
           else if(vue.nowenc==vue.lang.enc[3]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.lang.enc[4]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.lang.enc[5]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[6]){decsojsonp(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[6]){document.getElementById("encres").value=decsojsonp(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[7]){document.getElementById("encres").value=obdec_default(document.getElementById("needenc").value)}
         },
         cres:function(){
           rcp.copy(document.getElementById("encres").value)
