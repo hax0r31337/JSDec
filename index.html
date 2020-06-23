@@ -156,7 +156,7 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         fullyear: new Date().getFullYear(),
         item:0,
         sdec:function(){
-          if(vue.nowenc==null||document.getElementById("needenc").value.replace(" ","")==""){document.getElementById("encres").value=thislang.choosetyp}
+          if(vue.nowenc==null||document.getElementById("needenc").value.replace(/ /g,"")==""){document.getElementById("encres").value=thislang.choosetyp}
           else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value,{unescape_strings:true})}
           else if(vue.nowenc==vue.lang.enc[1]){document.getElementById("encres").value=uneval(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.lang.enc[2]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
@@ -192,7 +192,7 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         {title:"EN(US)",onc:function(){setCookie("lang=en_us;");window.location.replace("./index.html")}}
         ],
         processes:[
-        {title:thislang.p.beautify,onc:function(){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value,{unescape_strings:true})}},
+        {title:thislang.p.beautify,onc:function(){document.getElementById("encres").value=js_beautify(document.getElementById("encres").value,{unescape_strings:true})}},
         ]
       }
     })
