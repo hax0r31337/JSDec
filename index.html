@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/gh/liulihaocai/EasyCopy/copy.min.js"></script>
   <script src="https://cdn.bootcss.com/FileSaver.js/1.3.8/FileSaver.min.js"></script>
   <script src="./js/beautify.js"></script>
+  <script src="./js/uglifyjs.js"></script>
   <script src="./js/dec.js"></script>
   <script src="./js/jsfuck.js"></script>
   <link href="./css/font.css" rel="stylesheet">
@@ -89,7 +90,7 @@
       </v-list-tile-content>
     </template>
 </v-select>
-    <v-btn class="ma-2" color="primary" v-on:click="sdec">{{ lang.startdec }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="ujs">{{ lang.upload }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="cres">{{ lang.copyres }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="dres">{{ lang.downres }}</v-btn>
+    <v-btn class="ma-2" color="primary" v-on:click="sdec">{{ lang.startdec }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="ujs">{{ lang.upload }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="cres">{{ lang.copyres }}</v-btn><v-btn class="ma-2" color="primary" onclick="document.getElementById('encres').value='';document.getElementById('needenc').value=''">{{ lang.clearres }}</v-btn><v-btn class="ma-2" color="primary" v-on:click="dres">{{ lang.downres }}</v-btn>
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-btn dark v-bind="attrs" v-on="on" color="primary">{{ lang.prores }}<v-icon>mdi-menu-down</v-icon></v-btn>
@@ -143,9 +144,9 @@ function getCookie(name){
 }
 if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
 if(getCookie("lang")=="zh_cn"){
-var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型或输入内容",copyres:"复制结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",l1:"YSCTC云主机",prores:"优化结果",enc:["美化","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版","JavaScript Obfuscator(普通版)","列表混淆变量名"],p:{beautify:"美化"},al:{t:"欢迎使用～",info:true}}
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型或输入内容",copyres:"复制结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",clearres:"清除输入框",l1:"YSCTC云主机",prores:"优化结果",enc:["美化","UglifyJS","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版","JavaScript Obfuscator(普通版)","列表混淆变量名"],p:{beautify:"美化",uglify:"UglifyJS"},al:{t:"欢迎使用～",info:true}}
 }else if(getCookie("lang")=="en_us"){
-var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process or input your js code.",copyres:"Copy Result",downres:"Download Result",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",prores:"Process Result",enc:["Beautify","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium","JavaScript Obfuscator(Default)","list names"],p:{beautify:"Beautify"},al:{t:"JSDec EN(us) language support is not well",warning:true}}
+var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process or input your js code.",copyres:"Copy Result",downres:"Download Result",clearres:"Clear Textarea",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",prores:"Process Result",enc:["Beautify","UglifyJS","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium","JavaScript Obfuscator(Default)","list names"],p:{beautify:"Beautify",uglify:"UglifyJS"},al:{t:"JSDec EN(US) language support is not well",warning:true}}
 }
     var vue= new Vue({
       el: '#app',
@@ -158,14 +159,15 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         sdec:function(){
           if(vue.nowenc==null||document.getElementById("needenc").value.replace(/ /g,"")==""){document.getElementById("encres").value=thislang.choosetyp}
           else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value,{unescape_strings:true})}
-          else if(vue.nowenc==vue.lang.enc[1]){document.getElementById("encres").value=uneval(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[2]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[3]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[4]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[5]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[6]){document.getElementById("encres").value=decsojsonp(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[7]){document.getElementById("encres").value=obdec_default(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[8]){document.getElementById("encres").value=dec_list(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=UglifyJS.minify(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[2]){document.getElementById("encres").value=uneval(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[3]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[4]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[5]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[6]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[7]){document.getElementById("encres").value=decsojsonp(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[8]){document.getElementById("encres").value=obdec_default(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[9]){document.getElementById("encres").value=dec_list(document.getElementById("needenc").value)}
         },
         cres:function(){
           rcp.copy(document.getElementById("encres").value)
@@ -193,6 +195,7 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         ],
         processes:[
         {title:thislang.p.beautify,onc:function(){document.getElementById("encres").value=js_beautify(document.getElementById("encres").value,{unescape_strings:true})}},
+        {title:thislang.p.uglify,onc:function(){document.getElementById("encres").value=UglifyJS.minify(document.getElementById("encres").value).code}},
         ]
       }
     })
