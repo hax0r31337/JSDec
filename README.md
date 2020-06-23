@@ -13,6 +13,8 @@
 
 ## Sojson Premium
 
+## JS-obfuscator default
+
 # Thanks
 
 ## enkhee-Osiris

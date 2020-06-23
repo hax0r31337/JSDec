@@ -52,6 +52,31 @@ function obdec_default(jsf) {
     sandbox(head3,head2,head1)
     return result
 }
+function dec_list(jsf){
+    var result,name,jsfile;
+	function th(js,n){
+    	var s=js.split("")
+    	if(js.indexOf(n)==-1){result=js;return;}
+    	else{
+        	var c=js.indexOf(n)+n.length;
+        	while(true){
+            	c++;
+            	if(s[c]=="]"){
+                	break;
+            	}
+        	}
+        	var jstmp=js.substring(js.indexOf(n),c+1)
+    	    eval("var countn="+jstmp)
+	        js=js.replace(jstmp,"'"+countn+"'")
+        	th(js,n)
+    	}
+	}
+    name=jsf.substring(4,jsf.indexOf("="))
+    eval(jsf.substring(0,jsf.indexOf(";")+1))
+    jsfile=jsf.substring(jsf.indexOf(";")+1,jsf.length)
+    th(jsfile,name)
+    return result
+}
 function decsojsonp(jsf) {
     function th(js,n,sz){
         var s=js.split("")
