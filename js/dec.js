@@ -1,3 +1,19 @@
+function autoscan(jsf){
+	function checklist(f){
+		if((f.indexOf(",")!=-1)&&(f.indexOf("=")!=-1)&&(f.indexOf("[")!=-1)&&(f.indexOf("]")!=-1)&&(f.indexOf("var ")!=-1)){return true}
+	}
+	if(jsf.indexOf("sojson.v4")!=-1){return decsojson4(jsf)}
+	else if(jsf.indexOf("var __encode ='sojson.com")!=-1){return decsojsonp(jsf)}
+	else if(jsf.indexOf("'];(function(_0x")!=-1){return obdec_default(jsf)}
+	else if(checklist(jsf.substring(0,jsf.indexOf(";")))){return dec_list(jsf)}
+	else if(jsf.substring(0,100).replace(/ /g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/\[/g,"").replace(/\]/g,"").replace(/\+/g,"").replace(/!/g,"")==""){return decjsf(jsf)}
+	else if(jsf.substring(0,50).indexOf("eval")!=-1){return uneval(jsf)}
+	var jstmp=aadecode(jsf)
+	if(jstmp!="Failed!\nGiven code is not encoded as aaencode."){return jstmp}
+	jstmp=jjdecode(jsf)
+	if(jstmp!="Failed!\nGiven code is not encoded as jjencode."){return jstmp}
+	return "Auto-Scan Failed."
+}
 function uneval(jsf) {
 try{
 var s=jsf.indexOf("eval"),f=jsf.lastIndexOf(")");

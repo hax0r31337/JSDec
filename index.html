@@ -144,9 +144,9 @@ function getCookie(name){
 }
 if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
 if(getCookie("lang")=="zh_cn"){
-var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",choosetyp:"请选择混淆类型或输入内容",copyres:"复制结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",clearres:"清除输入框",l1:"YSCTC云主机",prores:"优化结果",enc:["美化","UglifyJS","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版","JavaScript Obfuscator(普通版)","列表混淆变量名"],p:{beautify:"美化",uglify:"UglifyJS"},al:{t:"欢迎使用～",info:true}}
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",inputsth:"请粘贴js文件",copyres:"复制结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",clearres:"清除输入框",l1:"YSCTC云主机",prores:"优化结果",enc:["自动识别","美化","UglifyJS","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版","JavaScript Obfuscator(普通版)","列表混淆变量名"],p:{beautify:"美化",uglify:"UglifyJS"},al:{t:"欢迎使用～",info:true}}
 }else if(getCookie("lang")=="en_us"){
-var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",choosetyp:"Plz choose a type of process or input your js code.",copyres:"Copy Result",downres:"Download Result",clearres:"Clear Textarea",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",prores:"Process Result",enc:["Beautify","UglifyJS","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium","JavaScript Obfuscator(Default)","list names"],p:{beautify:"Beautify",uglify:"UglifyJS"},al:{t:"JSDec EN(US) language support is not well",warning:true}}
+var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",inputsth:"Plz paste your js code in the textarea.",copyres:"Copy Result",downres:"Download Result",clearres:"Clear Textarea",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",prores:"Process Result",enc:["Auto Scan","Beautify","UglifyJS","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium","JavaScript Obfuscator(Default)","list names"],p:{beautify:"Beautify",uglify:"UglifyJS"},al:{t:"JSDec EN(US) language support is not well",warning:true}}
 }
     var vue= new Vue({
       el: '#app',
@@ -157,17 +157,18 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         fullyear: new Date().getFullYear(),
         item:0,
         sdec:function(){
-          if(vue.nowenc==null||document.getElementById("needenc").value.replace(/ /g,"")==""){document.getElementById("encres").value=thislang.choosetyp}
-          else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value,{unescape_strings:true})}
-          else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=UglifyJS.minify(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[2]){document.getElementById("encres").value=uneval(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[3]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[4]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[5]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[6]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[7]){document.getElementById("encres").value=decsojsonp(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[8]){document.getElementById("encres").value=obdec_default(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[9]){document.getElementById("encres").value=dec_list(document.getElementById("needenc").value)}
+          if(document.getElementById("needenc").value.replace(/ /g,"")==""){document.getElementById("encres").value=thislang.inputsth}
+          else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=autoscan(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[1]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value,{unescape_strings:true})}
+          else if(vue.nowenc==vue.lang.enc[2]){document.getElementById("encres").value=UglifyJS.minify(document.getElementById("needenc").value).code}
+          else if(vue.nowenc==vue.lang.enc[3]){document.getElementById("encres").value=uneval(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[4]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[5]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[6]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[7]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[8]){document.getElementById("encres").value=decsojsonp(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[9]){document.getElementById("encres").value=obdec_default(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[10]){document.getElementById("encres").value=dec_list(document.getElementById("needenc").value)}
         },
         cres:function(){
           rcp.copy(document.getElementById("encres").value)
@@ -178,7 +179,7 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         dres:function(){
           var blob = new Blob([document.getElementById("encres").value], {type: "text/plain;charset=utf-8"});saveAs(blob, "JSDec_"+rand_str(6)+".js")
         },
-        nowenc:null,
+        nowenc:thislang.enc[0],
         listitems:[
         {fg:false,fgt:thislang.tools},
         {fg:true,icon:"mdi-home",text:thislang.jsdecode,onc:function(){location.href="./index.html"}},
