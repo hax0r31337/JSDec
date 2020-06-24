@@ -2,7 +2,7 @@ function autoscan(jsf){
 	function checklist(f){
 		if((f.indexOf(",")!=-1)&&(f.indexOf("=")!=-1)&&(f.indexOf("[")!=-1)&&(f.indexOf("]")!=-1)&&(f.indexOf("var ")!=-1)){return true}
 	}
-	if(jsf.indexOf("sojson.v4")!=-1){return decsojson4(jsf)}
+	if(jsf.indexOf("['sojson.v4']")!=-1){return decsojson4(jsf)}
 	else if(jsf.indexOf("var __encode ='sojson.com")!=-1){return decsojsonp(jsf)}
 	else if(jsf.indexOf("'];(function(_0x")!=-1){return obdec_default(jsf)}
 	else if(checklist(jsf.substring(0,jsf.indexOf(";")))){return dec_list(jsf)}
