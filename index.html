@@ -143,9 +143,9 @@ function getCookie(name){
 }
 if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
 if(getCookie("lang")=="zh_cn"){
-var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",inputsth:"请粘贴js文件",copyres:"复制结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",links:"友链",clearres:"清除输入框",l1:"YSCTC云主机",prores:"优化结果",enc:["自动识别","美化","UglifyJS","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版","JavaScript Obfuscator(普通版)","列表混淆变量名"],p:{beautify:"美化",uglify:"UglifyJS"},al:{t:"欢迎使用～",info:true}}
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",inputsth:"请粘贴js文件",copyres:"复制结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",clearres:"清除输入框",prores:"优化结果",help:"帮助",enc:["自动识别","美化","UglifyJS","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版","JavaScript Obfuscator(普通版)","列表混淆变量名"],p:{beautify:"美化",uglify:"UglifyJS"},al:{t:"Black Lives Matter.",success:true}}
 }else if(getCookie("lang")=="en_us"){
-var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",inputsth:"Plz paste your js code in the textarea.",copyres:"Copy Result",downres:"Download Result",clearres:"Clear Textarea",upload:"Upload",startdec:"Decode",links:"Links",l1:"YSCTC Cloud",prores:"Process Result",enc:["Auto Scan","Beautify","UglifyJS","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium","JavaScript Obfuscator(Default)","list names"],p:{beautify:"Beautify",uglify:"UglifyJS"},al:{t:"JSDec EN(US) language support is not well",warning:true}}
+var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",inputsth:"Plz paste your js code in the textarea.",copyres:"Copy Result",downres:"Download Result",clearres:"Clear Textarea",upload:"Upload",startdec:"Decode",prores:"Process Result",help:"help",enc:["Auto Scan","Beautify","UglifyJS","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium","JavaScript Obfuscator(Default)","list names"],p:{beautify:"Beautify",uglify:"UglifyJS"},al:{t:"Black Lives Matter.",success:true}}
 }
     var vue= new Vue({
       el: '#app',
@@ -182,12 +182,12 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         listitems:[
         {fg:false,fgt:thislang.tools},
         {fg:true,icon:"mdi-home",text:thislang.jsdecode,onc:function(){location.href="./index.html"}},
+        {fg:true,icon:"mdi-console-network",text:"JSDec Api",onc:function(){window.open("https://liulihaocai.github.io/JSDec_Api")}},
+        {fg:true,icon:"mdi-book",text:thislang.help,onc:function(){window.open("./help")}},
         {fg:false,fgt:thislang.about},
         {fg:true,icon:"mdi-history",text:thislang.updlog,onc:function(){location.href="./upd.html"}},
         // {fg:true,icon:"mdi-heart-flash",text:"赞助作者",onc:function(){location.href="./donate.html"}},
         {fg:true,icon:"mdi-github",text:thislang.gh,onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
-        {fg:false,fgt:thislang.links},
-        {fg:true,icon:"mdi-thumb-up-outline",text:thislang.l1,onc:function(){window.open("http://ysss2.q7ds.com/")}},
         ],
         Langs:[
         {title:"中文(简体)",onc:function(){setCookie("lang=zh_cn;");window.location.replace("./index.html")}},
