@@ -69,6 +69,7 @@ function obdec_default(jsf) {
     return result
 }
 function dec_list(jsf){
+    if(!((jsf.indexOf(",")!=-1)&&(jsf.indexOf("=")!=-1)&&(jsf.indexOf("[")!=-1)&&(jsf.indexOf("]")!=-1)&&(jsf.indexOf("var ")!=-1))){throw 'Type Error!'}
     var result,name,jsfile;
 	function th(js,n){
     	var s=js.split("")

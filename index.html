@@ -158,7 +158,7 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         fullyear: new Date().getFullYear(),
         item:0,
         sdec:function(){
-          if(document.getElementById("needenc").value.replace(/ /g,"")==""){document.getElementById("encres").value=thislang.inputsth}
+          try{if(document.getElementById("needenc").value.replace(/ /g,"")==""){document.getElementById("encres").value=thislang.inputsth}
           else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=autoscan(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.lang.enc[1]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value,{unescape_strings:true})}
           else if(vue.nowenc==vue.lang.enc[2]){document.getElementById("encres").value=UglifyJS.minify(document.getElementById("needenc").value).code}
@@ -169,7 +169,10 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
           else if(vue.nowenc==vue.lang.enc[7]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.lang.enc[8]){document.getElementById("encres").value=decsojsonp(document.getElementById("needenc").value)}
           else if(vue.nowenc==vue.lang.enc[9]){document.getElementById("encres").value=obdec_default(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[10]){document.getElementById("encres").value=dec_list(document.getElementById("needenc").value)}
+          else if(vue.nowenc==vue.lang.enc[10]){document.getElementById("encres").value=dec_list(document.getElementById("needenc").value)}}
+          catch(e){
+              document.getElementById("encres").value='Failed!\n'+e
+          }
         },
         cres:function(){
           rcp.copy(document.getElementById("encres").value)
