@@ -12,7 +12,7 @@ function autoscan(jsf){
 	if(jstmp!="Failed!\nGiven code is not encoded as aaencode."){return jstmp}
 	jstmp=jjdecode(jsf)
 	if(jstmp!="Failed!\nGiven code is not encoded as jjencode."){return jstmp}
-	return "Auto-Scan Failed."
+	return "Failed!\nAuto-Scan Failed."
 }
 function uneval(jsf) {
 try{

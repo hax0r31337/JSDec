@@ -14,6 +14,9 @@
   <script src="./js/beautify.js"></script>
   <script src="./js/uglifyjs.js"></script>
   <script src="./js/dec.js"></script>
+  <script src="./js/functions.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   <link href="./css/font.css" rel="stylesheet">
 </head>
 <body>
@@ -130,19 +133,7 @@
 </div>
 <div id="rcp"></div>
 <input type="file" name="file" id="fileId" style="display: none;" />
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-  <script>
-function setCookie(name,value){
-    document.cookie = name + "="+ escape (value);
-}
-function getCookie(name){
-    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-    if(arr=document.cookie.match(reg))
-        return unescape(arr[2]);
-    else
-        return null;
-}
+<script>
 if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
 if(getCookie("lang")=="zh_cn"){
 var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",inputsth:"请粘贴js文件",copyres:"复制结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",clearres:"清除输入框",prores:"优化结果",help:"帮助",enc:["自动识别","美化","UglifyJS","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版","JavaScript Obfuscator(普通版)","列表混淆变量名"],p:{beautify:"美化",uglify1:"Uglify-名称",uglify2:"Uglify-优化"},al:{t:"Black Lives Matter.",success:true}}
@@ -158,21 +149,19 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         fullyear: new Date().getFullYear(),
         item:0,
         sdec:function(){
-          try{if(document.getElementById("needenc").value.replace(/ /g,"")==""){document.getElementById("encres").value=thislang.inputsth}
-          else if(vue.nowenc==vue.lang.enc[0]){document.getElementById("encres").value=autoscan(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[1]){document.getElementById("encres").value=js_beautify(document.getElementById("needenc").value,{unescape_strings:true})}
-          else if(vue.nowenc==vue.lang.enc[2]){document.getElementById("encres").value=UglifyJS.minify(document.getElementById("needenc").value).code}
-          else if(vue.nowenc==vue.lang.enc[3]){document.getElementById("encres").value=uneval(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[4]){document.getElementById("encres").value=aadecode(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[5]){document.getElementById("encres").value=jjdecode(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[6]){document.getElementById("encres").value=decjsf(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[7]){document.getElementById("encres").value=decsojson4(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[8]){document.getElementById("encres").value=decsojsonp(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[9]){document.getElementById("encres").value=obdec_default(document.getElementById("needenc").value)}
-          else if(vue.nowenc==vue.lang.enc[10]){document.getElementById("encres").value=dec_list(document.getElementById("needenc").value)}}
-          catch(e){
-              document.getElementById("encres").value='Failed!\n'+e
-          }
+          try{if(document.getElementById("needenc").value.replace(/ /g,"")==""){st('Failed!\n'+thislang.inputsth)}
+          else if(vue.nowenc==vue.lang.enc[0]){stimer();st(autoscan(document.getElementById("needenc").value))}
+          else if(vue.nowenc==vue.lang.enc[1]){stimer();st(js_beautify(document.getElementById("needenc").value,{unescape_strings:true}))}
+          else if(vue.nowenc==vue.lang.enc[2]){stimer();st(UglifyJS.minify(document.getElementById("needenc").value).code)}
+          else if(vue.nowenc==vue.lang.enc[3]){stimer();st(uneval(document.getElementById("needenc").value))}
+          else if(vue.nowenc==vue.lang.enc[4]){stimer();st(aadecode(document.getElementById("needenc").value))}
+          else if(vue.nowenc==vue.lang.enc[5]){stimer();st(jjdecode(document.getElementById("needenc").value))}
+          else if(vue.nowenc==vue.lang.enc[6]){stimer();st(decjsf(document.getElementById("needenc").value))}
+          else if(vue.nowenc==vue.lang.enc[7]){stimer();st(decsojson4(document.getElementById("needenc").value))}
+          else if(vue.nowenc==vue.lang.enc[8]){stimer();st(decsojsonp(document.getElementById("needenc").value))}
+          else if(vue.nowenc==vue.lang.enc[9]){stimer();stimer();st(obdec_default(document.getElementById("needenc").value))}
+          else if(vue.nowenc==vue.lang.enc[10]){stimer();st(dec_list(document.getElementById("needenc").value))}}
+          catch(e){st('Failed!\n'+e)}
         },
         cres:function(){
           rcp.copy(document.getElementById("encres").value)
@@ -199,9 +188,9 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         {title:"EN(US)",onc:function(){setCookie("lang=en_us;");window.location.replace("./index.html")}}
         ],
         processes:[
-        {title:thislang.p.beautify,onc:function(){document.getElementById("encres").value=js_beautify(document.getElementById("encres").value,{unescape_strings:true})}},
-        {title:thislang.p.uglify1,onc:function(){document.getElementById("encres").value=UglifyJS.minify(document.getElementById("encres").value).code,{compress:false}}},
-        {title:thislang.p.uglify2,onc:function(){document.getElementById("encres").value=UglifyJS.minify(document.getElementById("encres").value,{compress:{keep_fnames:true},mangle:{keep_fnames:true},keep_fnames:true,output:{beautify:true,ascii_only:true}}).code}},
+        {title:thislang.p.beautify,onc:function(){stimer();st(js_beautify(document.getElementById("encres").value,{unescape_strings:true}))}},
+        {title:thislang.p.uglify1,onc:function(){stimer();st(UglifyJS.minify(document.getElementById("encres").value,{compress:false}).code)}},
+        {title:thislang.p.uglify2,onc:function(){stimer();st(UglifyJS.minify(document.getElementById("encres").value,{compress:{keep_fnames:true},mangle:{keep_fnames:true},keep_fnames:true,output:{beautify:true,ascii_only:true}}).code)}},
         ]
       }
     })
