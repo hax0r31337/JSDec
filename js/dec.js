@@ -40,14 +40,8 @@ function obdec_default(jsf) {
         var s=js.split("")
         if(js.indexOf(n)==-1){result=js;return;}
         else{
-            var c=js.indexOf(n)+n.length;
-            while(true){
-                c++;
-                if(s[c]==")"){
-                    break;
-                }
-            }
-            var jstmp=js.substring(js.indexOf(n),c+1)
+            var c=js.substring(js.indexOf(n),js.length);
+            var jstmp=c.substring(0,c.indexOf("')")+2)
             eval("var countn="+jstmp)
             js=js.replace(jstmp,"'"+countn+"'")
             th(js,n)
@@ -75,14 +69,8 @@ function dec_list(jsf){
     	var s=js.split("")
     	if(js.indexOf(n)==-1){result=js;return;}
     	else{
-        	var c=js.indexOf(n)+n.length;
-        	while(true){
-            	c++;
-            	if(s[c]=="]"){
-                	break;
-            	}
-        	}
-        	var jstmp=js.substring(js.indexOf(n),c+1)
+            var c=js.substring(js.indexOf(n),js.length);
+            var jstmp=c.substring(0,c.indexOf("]")+1)
     	    eval("var countn="+jstmp)
 	        js=js.replace(jstmp,"'"+countn+"'")
         	th(js,n)
@@ -99,16 +87,10 @@ function decsojsonp(jsf) {
         var s=js.split("")
         if(js.indexOf(n)==-1){result=js;return}
         else{
-           var c=js.indexOf(n)+n.length;
-           while(true){
-               c++;
-               if(s[c]=="]"){
-                    break;
-                }
-           }
-            var jstmp=js.substring(js.indexOf(n),c+1),count=jstmp.substring(jstmp.indexOf('['),c+1)
-            eval("var countn=sz"+count)
-            js=js.replace(jstmp,"'"+countn+"'")
+            var c=js.substring(js.indexOf(n)+n.length,js.length);
+            var jstmp=c.substring(0,c.indexOf("]")+1)
+            eval("var countn=sz"+jstmp)
+            js=js.replace(n+jstmp,"'"+countn+"'")
             th(js,n,sz)
         }
     }
