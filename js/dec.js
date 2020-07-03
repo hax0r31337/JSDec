@@ -34,7 +34,6 @@ function decsojson4(jsf) {
     return str
 }
 function obdec_default(jsf) {
-    if(jsf.indexOf('_0x')==-1){return "Failed!\nGiven code is not encoded as JS-Obfuscator.";}
     function sandbox(cjs,bjs,name) {
     function th(js,n){
         var s=js.split("")
@@ -42,8 +41,9 @@ function obdec_default(jsf) {
         else{
             var c=js.substring(js.indexOf(n),js.length);
             var jstmp=c.substring(0,c.indexOf("')")+2)
-            eval("var countn="+jstmp)
-            js=js.replace(jstmp,"'"+countn+"'")
+            try{eval("var countn="+jstmp)}
+            catch(e){var jstmp2=c.substring(c.indexOf("')")+2,c.length);jstmp=jstmp+jstmp2.substring(0,jstmp2.indexOf("')")+2);eval("var countn="+jstmp);}
+            js=js.replace(jstmp,"'"+countn.replace(/\n/g,'\\n')+"'")
             th(js,n)
         }
     }
@@ -62,6 +62,14 @@ function obdec_default(jsf) {
     sandbox(head3,head2,head1)
     return result
 }
+function dec_sojsonv5_default(jsf) {
+    var js=obdec_default(jsf);
+    return js.substring(0,js.indexOf('(function(_0x'));
+}
+function dec_jsjiamiv6_default(jsf) {
+    var js=obdec_default(jsf);
+    return js.substring(0,js.lastIndexOf(';'));
+}
 function dec_list(jsf){
     if(!((jsf.indexOf(",")!=-1)&&(jsf.indexOf("=")!=-1)&&(jsf.indexOf("[")!=-1)&&(jsf.indexOf("]")!=-1)&&(jsf.indexOf("var ")!=-1))){throw 'Type Error!'}
     var result,name,jsfile;
@@ -72,7 +80,7 @@ function dec_list(jsf){
             var c=js.substring(js.indexOf(n),js.length);
             var jstmp=c.substring(0,c.indexOf("]")+1)
     	    eval("var countn="+jstmp)
-	        js=js.replace(jstmp,"'"+countn+"'")
+	        js=js.replace(jstmp,"'"+countn.replace(/\n/g,'\\n')+"'")
         	th(js,n)
     	}
 	}
@@ -90,7 +98,7 @@ function decsojsonp(jsf) {
             var c=js.substring(js.indexOf(n)+n.length,js.length);
             var jstmp=c.substring(0,c.indexOf("]")+1)
             eval("var countn=sz"+jstmp)
-            js=js.replace(n+jstmp,"'"+countn+"'")
+            js=js.replace(n+jstmp,"'"+countn.replace(/\n/g,'\\n')+"'")
             th(js,n,sz)
         }
     }
