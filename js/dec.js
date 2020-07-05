@@ -50,21 +50,31 @@ function obdec_default(jsf) {
         eval(cjs);
         th(bjs,name);return;
     }
-    var head1,result,head2=jsf.substring(jsf.indexOf("));var")+3,jsf.length),head3=head2.substring(head2.indexOf(")")+1,head2.length).split(""),c=0,pos,ch=false;
+    if(jsf.indexOf("));var")!=-1){var indf=jsf.indexOf("));var")}
+    else{var indf=jsf.indexOf(")); var ")}
+    var head1,result,head2=jsf.substring(indf+3,jsf.length),head3=head2.substring(head2.indexOf(")")+1,head2.length).split(""),c=0,pos,ch=-1;
     for(var i=0;i<head3.length;i++){
-        if(head3[i]=="{"){c++}
+        if(head3[i]=="{"){c++;if(ch==-1){ch=0}}
         else if(head3[i]=="}"){c--}
-        if(c==0&&ch==false){ch=true;pos=i;}
+        if(c==0&&ch==0){ch=1;pos=i;}
     }
-    head1=head2.substring(4,head2.indexOf("="));
-    head3=jsf.substring(0,pos+head2.indexOf(")")+6+jsf.indexOf("));var"));
-    head2=jsf.substring(pos+head2.indexOf(")")+6+jsf.indexOf("));var"),jsf.length)
+    head1=head2.substring(4,head2.indexOf("=")).replace(/ /g,'');
+    head3=jsf.substring(0,pos+head2.indexOf(")")+6+indf);
+    head2=jsf.substring(pos+head2.indexOf(")")+6+indf,jsf.length)
+    console.log(head3)
+    console.log(head2)
+    console.log(head1)
     sandbox(head3,head2,head1)
     return result
 }
 function dec_sojsonv5_default(jsf) {
+    if(jsf.indexOf('sojson.v5\',')==-1){return 'Failed\nNot Encoded as sojsonv5'}
+    else{
+    jsf=jsf.substring(jsf.indexOf('sojson.v5\',')+12,jsf.length)
+    jsf='var '+jsf.substring(jsf.indexOf(',   ')+2,jsf.length)
     var js=obdec_default(jsf);
     return js.substring(0,js.indexOf('(function(_0x'));
+    }
 }
 function dec_jsjiamiv6_default(jsf) {
     var js=obdec_default(jsf);
