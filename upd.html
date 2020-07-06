@@ -89,7 +89,7 @@ function getCookie(name){
 }
 if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
 if(getCookie("lang")=="zh_cn"){
-var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",upd16:"修复bug<br>UI优化<br>加入自动识别js混淆类型,UglifyJS专项处理",upd15:"修复bug<br>支持UglifyJS处理<br>UI优化",upd14:"UI优化<br>修复bug<br>支持破解JS-obfuscator普通版",upd13:"支持破解Sojson v4及Sojson高级版<br>多语言支持",upd12:"性能优化<br>支持上传文件",upd11:"修复bug<br>支持美化js，破解JSF*ck，一键美化破解结果",upd10:"第一个版本，支持eval/aaencode/jjencode的js解密",help:"帮助"}
+var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",upd17:"修复bug<br>支持破解Sojson v5和jsjiami v6的默认配置<br>优化js-obfuscator破解的破解成功率",upd16:"修复bug<br>UI优化<br>加入自动识别js混淆类型,UglifyJS专项处理",upd15:"修复bug<br>支持UglifyJS处理<br>UI优化",upd14:"UI优化<br>修复bug<br>支持破解JS-obfuscator普通版",upd13:"支持破解Sojson v4及Sojson高级版<br>多语言支持",upd12:"性能优化<br>支持上传文件",upd11:"修复bug<br>支持美化js，破解JSF*ck，一键美化破解结果",upd10:"第一个版本，支持eval/aaencode/jjencode的js解密",help:"帮助"}
 }else if(getCookie("lang")=="en_us"){
 var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",upd16:"fix bugs<br>UI Update<br>added Auto Scan js encode type,UglifyJS detail progcess",upd15:"fix bugs<br>UglifyJS progcess supported<br>UI Update",upd14:"UI Update<br>fix bugs<br>supported JS-obfuscator default",upd13:"Sojson v4 and Sojson Premium decode supported<br>Multi Language supported",upd12:"optimization<br>Supported upload",upd11:"fix bugs<br>JS_Beautify and decode JSF*ck supported",upd10:"first version<br>eval/aaencode/jjencode decode supported",help:"help"}
 }
@@ -103,6 +103,7 @@ document.getElementById("updlog").innerHTML=thislang.updlog+"(JSDec) - Liulihaoc
         fullyear: new Date().getFullYear(),
         item:2,
         upl:[
+        {ver:'v1.7',date:'2020-07-06',tell:thislang.upd17},
         {ver:'v1.6',date:'2020-06-24',tell:thislang.upd16},
         {ver:'v1.5',date:'2020-06-23',tell:thislang.upd15},
         {ver:'v1.4',date:'2020-06-22',tell:thislang.upd14},

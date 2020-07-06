@@ -4,6 +4,8 @@ function autoscan(jsf){
 	}
 	if(jsf.indexOf("['sojson.v4']")!=-1){return decsojson4(jsf)}
 	else if(jsf.indexOf("var __encode ='sojson.com")!=-1){return decsojsonp(jsf)}
+    else if(jsf.indexOf("var encode_version = 'sojson.v5',")!=-1){return dec_sojsonv5_default(jsf)}
+    else if(jsf.indexOf("'jsjiami.com.v6'")!=-1){return dec_jsjiamiv6_default(jsf)}
 	else if(jsf.indexOf("'];(function(_0x")!=-1){return obdec_default(jsf)}
 	else if(checklist(jsf.substring(0,jsf.indexOf(";")))){return dec_list(jsf)}
 	else if(jsf.substring(0,100).replace(/ /g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/\[/g,"").replace(/\]/g,"").replace(/\+/g,"").replace(/!/g,"")==""){return decjsf(jsf)}
@@ -61,9 +63,6 @@ function obdec_default(jsf) {
     head1=head2.substring(4,head2.indexOf("=")).replace(/ /g,'');
     head3=jsf.substring(0,pos+head2.indexOf(")")+6+indf);
     head2=jsf.substring(pos+head2.indexOf(")")+6+indf,jsf.length)
-    console.log(head3)
-    console.log(head2)
-    console.log(head1)
     sandbox(head3,head2,head1)
     return result
 }
