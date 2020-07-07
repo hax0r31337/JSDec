@@ -52,8 +52,10 @@ function obdec_default(jsf) {
         eval(cjs);
         th(bjs,name);return;
     }
-    if(jsf.indexOf("));var")!=-1){var indf=jsf.indexOf("));var")}
-    else{var indf=jsf.indexOf(")); var ")}
+    if(jsf.indexOf("));var")!=-1){var indf=jsf.indexOf("));var");}
+    else if(jsf.indexOf(")); var")!=-1){var indf=jsf.indexOf(")); var");}
+    else if(jsf.indexOf("));\nvar")!=-1){var indf=jsf.indexOf("));\nvar");}
+    else{throw 'Cannot Found function.'}
     var head1,result,head2=jsf.substring(indf+3,jsf.length),head3=head2.substring(head2.indexOf(")")+1,head2.length).split(""),c=0,pos,ch=-1;
     for(var i=0;i<head3.length;i++){
         if(head3[i]=="{"){c++;if(ch==-1){ch=0}}
