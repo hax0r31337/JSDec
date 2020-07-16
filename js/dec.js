@@ -45,7 +45,7 @@ function obdec_default(jsf) {
             var jstmp=c.substring(0,c.indexOf("')")+2)
             try{eval("var countn="+jstmp)}
             catch(e){var jstmp2=c.substring(c.indexOf("')")+2,c.length);jstmp=jstmp+jstmp2.substring(0,jstmp2.indexOf("')")+2);eval("var countn="+jstmp);}
-            js=js.replace(jstmp,"'"+countn.replace(/\n/g,'\\n')+"'")
+            js=js.replace(jstmp,"'"+countn.replace(/\n/g,'\\n').replace(/'/g,'\'')+"'")
             th(js,n)
         }
     }
@@ -109,7 +109,7 @@ function decsojsonp(jsf) {
             var c=js.substring(js.indexOf(n)+n.length,js.length);
             var jstmp=c.substring(0,c.indexOf("]")+1)
             eval("var countn=sz"+jstmp)
-            js=js.replace(n+jstmp,"'"+countn.replace(/\n/g,'\\n')+"'")
+            js=js.replace(n+jstmp,"'"+countn.replace(/\n/g,'\\n').replace(/'/g,'\'')+"'")
             th(js,n,sz)
         }
     }
