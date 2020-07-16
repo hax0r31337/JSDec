@@ -81,7 +81,7 @@
   <v-container>
 <v-select 
   v-model="nowenc"
-  label="Plz choose a type of process"
+  label="Plz choose a type of progcess"
   :items="lang.enc"
  >
   <template
@@ -100,7 +100,7 @@
       </template>
       <v-list>
         <v-list-item
-          v-for="(item, index) in processes"
+          v-for="(item, index) in progcesses"
           :key="index"
           @click="item.onc"
         >
@@ -133,12 +133,6 @@
 <div id="rcp"></div>
 <input type="file" name="file" id="fileId" style="display: none;" />
 <script>
-if(getCookie("lang")==null){if(navigator.language.substr(0,2)=="zh"){setCookie("lang=zh_cn;")}else{setCookie("lang=en_us;")}}
-if(getCookie("lang")=="zh_cn"){
-var thislang={nowlang:"中文(简体)",tools:"功能",jsdecode:"JS解码",about:"关于",updlog:"更新日志",gh:"Github",decresult:"破解结果",inputsth:"请粘贴js文件",copyres:"复制结果",downres:"下载结果",upload:"上传文件",startdec:"开始破解",clearres:"清除输入框",prores:"优化结果",help:"帮助",enc:["自动识别","美化","UglifyJS","Eval(包含packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson高级版","JavaScript Obfuscator(普通版)","列表混淆变量名","sojson v5(默认配置)","jsjiami v6(默认配置)"],p:{beautify:"美化",uglify1:"Uglify-名称",uglify2:"Uglify-优化"},al:{t:""/*,warning:true*/}}
-}else if(getCookie("lang")=="en_us"){
-var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",updlog:"Update Logs",gh:"Github",decresult:"Decode Result",inputsth:"Plz paste your js code in the textarea.",copyres:"Copy Result",downres:"Download Result",clearres:"Clear Textarea",upload:"Upload",startdec:"Decode",prores:"Process Result",help:"help",enc:["Auto Scan","Beautify","UglifyJS","Eval(packer)","AAEncode","JJEncode","JSF*ck","sojson v4","sojson Premium","JavaScript Obfuscator(Default)","list names","sojson v5(Default)","jsjiami v6(Default)"],p:{beautify:"Beautify",uglify1:"Uglify-names",uglify2:"Uglify-Better",uglify3:"Uglify-Properties"},al:{t:""/*,warning:true*/}}
-}
     var vue= new Vue({
       el: '#app',
       vuetify: new Vuetify({theme:{themes:{light:{primary:"#F8A912",},},},}),
@@ -183,11 +177,8 @@ var thislang={nowlang:"EN(US)",tools:"Tools",jsdecode:"JS Decode",about:"About",
         // {fg:true,icon:"mdi-heart-flash",text:"赞助作者",onc:function(){location.href="./donate.html"}},
         {fg:true,icon:"mdi-github",text:thislang.gh,onc:function(){window.open("https://github.com/liulihaocai/JSDec")}},
         ],
-        Langs:[
-        {title:"中文(简体)",onc:function(){setCookie("lang=zh_cn;");window.location.replace("./index.html")}},
-        {title:"EN(US)",onc:function(){setCookie("lang=en_us;");window.location.replace("./index.html")}}
-        ],
-        processes:[
+        Langs:Wlangs,
+        progcesses:[
         {title:thislang.p.beautify,onc:function(){stimer();st(js_beautify(document.getElementById("encres").value,{unescape_strings:true}))}},
         {title:thislang.p.uglify1,onc:function(){stimer();st(UglifyJS.minify(document.getElementById("encres").value,{compress:false}).code)}},
         {title:thislang.p.uglify2,onc:function(){stimer();st(UglifyJS.minify(document.getElementById("encres").value,{compress:{keep_fnames:true},mangle:{keep_fnames:true},keep_fnames:true,output:{beautify:true,ascii_only:true}}).code)}},
