@@ -35,38 +35,44 @@ function decsojson4(jsf) {
     }
     return str
 }
-function obdec_default(jsf) {
-    function sandbox(cjs,bjs,name) {
-    function th(js,n){
-        var s=js.split("")
-        if(js.indexOf(n)==-1){result=js;return;}
-        else{
-            var c=js.substring(js.indexOf(n),js.length);
-            var jstmp=c.substring(0,c.indexOf("')")+2)
-            try{eval("var countn="+jstmp)}
-            catch(e){var jstmp2=c.substring(c.indexOf("')")+2,c.length);jstmp=jstmp+jstmp2.substring(0,jstmp2.indexOf("')")+2);eval("var countn="+jstmp);}
-            js=js.replace(jstmp,"'"+countn.replace(/\n/g,'\\n').replace(/'/g,'\'')+"'")
-            th(js,n)
+function obdec_default(jsf,thr1=false,throwederror='') {
+    var ojs=jsf,spljs;
+    try{
+        function sandbox(cjs,bjs,name) {
+        function th(js,n){
+           var s=js.split("")
+           if(js.indexOf(n)==-1){result=js;return;}
+           else{
+               var c=js.substring(js.indexOf(n),js.length);
+                var jstmp=c.substring(0,c.indexOf("')")+2)
+                try{eval("var countn="+jstmp)}
+                catch(e){var jstmp2=c.substring(c.indexOf("')")+2,c.length);jstmp=jstmp+jstmp2.substring(0,jstmp2.indexOf("')")+2);eval("var countn="+jstmp);}
+                js=js.replace(jstmp,"'"+countn.replace(/\n/g,'\\n').replace(/'/g,'\'')+"'")
+               th(js,n)
+           }
         }
+            eval(cjs);
+            th(bjs,name);return;
+        }
+        if(jsf.indexOf("));var")!=-1){var indf=jsf.indexOf("));var");spljs='));var'}
+        else if(jsf.indexOf(")); var")!=-1){var indf=jsf.indexOf(")); var");spljs=')); var'}
+        else if(jsf.indexOf("));\nvar")!=-1){var indf=jsf.indexOf("));\nvar");spljs='));\nvar'}
+        else{throw 'Cannot Found function.'}
+        var head1,result,head2=jsf.substring(indf+3,jsf.length),head3=head2.substring(head2.indexOf(")")+1,head2.length).split(""),c=0,pos,ch=-1;
+        for(var i=0;i<head3.length;i++){
+            if(head3[i]=="{"){c++;if(ch==-1){ch=0}}
+            else if(head3[i]=="}"){c--}
+            if(c==0&&ch==0){ch=1;pos=i;}
+        }
+        head1=head2.substring(4,head2.indexOf("=")).replace(/ /g,'');
+        head3=jsf.substring(0,pos+head2.indexOf(")")+6+indf);
+        head2=jsf.substring(pos+head2.indexOf(")")+6+indf,jsf.length)
+        sandbox(head3,head2,head1)
+        return result
+    }catch(e){
+        if(thr1==false){return obdec_default(ojs.replace(spljs,'));\tvar'),true,e);}
+        else{return 'Failed!\nthrowed1:'+throwederror+'\nthrowed2:'+e}
     }
-        eval(cjs);
-        th(bjs,name);return;
-    }
-    if(jsf.indexOf("));var")!=-1){var indf=jsf.indexOf("));var");}
-    else if(jsf.indexOf(")); var")!=-1){var indf=jsf.indexOf(")); var");}
-    else if(jsf.indexOf("));\nvar")!=-1){var indf=jsf.indexOf("));\nvar");}
-    else{throw 'Cannot Found function.'}
-    var head1,result,head2=jsf.substring(indf+3,jsf.length),head3=head2.substring(head2.indexOf(")")+1,head2.length).split(""),c=0,pos,ch=-1;
-    for(var i=0;i<head3.length;i++){
-        if(head3[i]=="{"){c++;if(ch==-1){ch=0}}
-        else if(head3[i]=="}"){c--}
-        if(c==0&&ch==0){ch=1;pos=i;}
-    }
-    head1=head2.substring(4,head2.indexOf("=")).replace(/ /g,'');
-    head3=jsf.substring(0,pos+head2.indexOf(")")+6+indf);
-    head2=jsf.substring(pos+head2.indexOf(")")+6+indf,jsf.length)
-    sandbox(head3,head2,head1)
-    return result
 }
 function dec_sojsonv5_default(jsf) {
     if(jsf.indexOf('sojson.v5\',')==-1){return 'Failed\nNot Encoded as sojsonv5'}
