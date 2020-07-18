@@ -17,13 +17,9 @@ function autoscan(jsf){
 	return "Failed!\nAuto-Scan Failed."
 }
 function uneval(jsf) {
-try{
-var s=jsf.indexOf("eval"),f=jsf.lastIndexOf(")");
-eval("jsf=String"+jsf.substring(s+4,f+1))
-}catch(e){
-    return "Failed\n"+e
-}
-return jsf
+    var s=jsf.indexOf("eval"),f=jsf.lastIndexOf(")");
+    eval("jsf=String"+jsf.substring(s+4,f+1))
+    return jsf
 }
 function decsojson4(jsf) {
     var head="['sojson.v4']"
@@ -125,26 +121,20 @@ function aadecode(text){
     return eval(decodingScript);
 }
 function jjdecode(t) {
-    //clean it
     var jjvalue=""
     t.replace(/^\s+|\s+$/g, "");
     var startpos;
     var endpos;
     var gv;
     var gvl;
-    if (t.indexOf("\"\'\\\"+\'+\",") == 0) //palindrome check
-    {
-        //locate jjcode
+    if (t.indexOf("\"\'\\\"+\'+\",") == 0){
         startpos = t.indexOf('$$+"\\""+') + 8;
         endpos = t.indexOf('"\\"")())()');
-        //get gv
         gv = t.substring((t.indexOf('"\'\\"+\'+",') + 9), t.indexOf("=~[]"));
         gvl = gv.length;
     } else {
-        //get gv
         gv = t.substr(0, t.indexOf("="));
         gvl = gv.length;
-        //locate jjcode
         startpos = t.indexOf('"\\""+') + 5;
         endpos = t.indexOf('"\\"")())()');
     }
@@ -152,16 +142,12 @@ function jjdecode(t) {
         alert("No data !");
         return;
     }
-    //start decoding
     var data = t.substring(startpos, endpos);
-    //hex decode string
     var b = ["___+", "__$+", "_$_+", "_$$+", "$__+", "$_$+", "$$_+", "$$$+", "$___+", "$__$+", "$_$_+", "$_$$+", "$$__+", "$$_$+", "$$$_+", "$$$$+"];
-    //lotu
     var str_l = "(![]+\"\")[" + gv + "._$_]+";
     var str_o = gv + "._$+";
     var str_t = gv + ".__+";
     var str_u = gv + "._+";
-    //0123456789abcdef
     var str_hex = gv + ".";
     var str_s = '"';
     var gvsig = gv + ".";
@@ -169,9 +155,8 @@ function jjdecode(t) {
     var str_slash = '\\\\\\\\';
     var str_lower = "\\\\\"+";
     var str_upper = "\\\\\"+" + gv + "._+";
-    var str_end = '"+'; //end of s loop
+    var str_end = '"+';
     while (data != "") {
-        //l o t u
         if (0 == data.indexOf(str_l)) {
             data = data.substr(str_l.length);
             jjvalue+="l"
@@ -189,10 +174,8 @@ function jjdecode(t) {
             jjvalue+="u"
             continue;
         }
-        //0123456789abcdef
         if (0 == data.indexOf(str_hex)) {
             data = data.substr(str_hex.length);
-            //check every element of hex decode string for a match 
             var i = 0;
             for (i = 0; i < b.length; i++) {
                 if (0 == data.indexOf(b[i])) {
@@ -203,21 +186,15 @@ function jjdecode(t) {
             }
             continue;
         }
-        //start of s block
         if (0 == data.indexOf(str_s)) {
             data = data.substr(str_s.length);
-            //check if "R
-            if (0 == data.indexOf(str_upper)) // r4 n >= 128
-            {
-                data = data.substr(str_upper.length); //skip sig
+            if (0 == data.indexOf(str_upper)){
+                data = data.substr(str_upper.length);
                 var ch_str = "";
-                for (j = 0; j < 2; j++) //shouldn't be more than 2 hex chars
-                {
-                    //gv + "."+b[ c ]               
+                for (j = 0; j < 2; j++){
                     if (0 == data.indexOf(gvsig)) {
-                        data = data.substr(gvsig.length); //skip gvsig  
-                        for (k = 0; k < b.length; k++) //for every entry in b
-                        {
+                        data = data.substr(gvsig.length);
+                        for (k = 0; k < b.length; k++){
                             if (0 == data.indexOf(b[k])) {
                                 data = data.substr(b[k].length);
                                 ch_str += k.toString(16) + "";
@@ -225,23 +202,19 @@ function jjdecode(t) {
                             }
                         }
                     } else {
-                        break; //done
+                        break;
                     }
                 }
                 jjvalue+=String.fromCharCode(parseInt(ch_str, 16))
                 continue;
-            } else if (0 == data.indexOf(str_lower)) //r3 check if "R // n < 128
-            {
-                data = data.substr(str_lower.length); //skip sig
+            } else if (0 == data.indexOf(str_lower)){
+                data = data.substr(str_lower.length);
                 var ch_str = "";
                 var ch_lotux = ""
                 var temp = "";
                 var b_checkR1 = 0;
-                for (j = 0; j < 3; j++) //shouldn't be more than 3 octal chars
-                {
-
-                    if (j > 1) //lotu check
-                    {
+                for (j = 0; j < 3; j++) {
+                    if (j > 1){
                         if (0 == data.indexOf(str_l)) {
                             data = data.substr(str_l.length);
                             ch_lotux = "l";
@@ -260,27 +233,23 @@ function jjdecode(t) {
                             break;
                         }
                     }
-                    //gv + "."+b[ c ]                           
                     if (0 == data.indexOf(gvsig)) {
                         temp = data.substr(gvsig.length);
-                        for (k = 0; k < 8; k++) //for every entry in b octal
-                        {
+                        for (k = 0; k < 8; k++){
                             if (0 == temp.indexOf(b[k])) {
                                 if (parseInt(ch_str + k + "", 8) > 128) {
                                     b_checkR1 = 1;
                                     break;
                                 }
                                 ch_str += k + "";
-                                data = data.substr(gvsig.length); //skip gvsig
+                                data = data.substr(gvsig.length);
                                 data = data.substr(b[k].length);
                                 break;
                             }
                         }
                         if (1 == b_checkR1) {
-                            if (0 == data.indexOf(str_hex)) //0123456789abcdef
-                            {
+                            if (0 == data.indexOf(str_hex)){
                                 data = data.substr(str_hex.length);
-                                //check every element of hex decode string for a match 
                                 var i = 0;
                                 for (i = 0; i < b.length; i++) {
                                     if (0 == data.indexOf(b[i])) {
@@ -293,18 +262,14 @@ function jjdecode(t) {
                             }
                         }
                     } else {
-                        break; //done
+                        break;
                     }
                 }
                 jjvalue+=String.fromCharCode(parseInt(ch_str, 8)) + ch_lotux
-                continue; //step out of the while loop
-            } else //"S ----> "SR or "S+
-            {
-                // if there is, loop s until R 0r +
-                // if there is no matching s block, throw error
+                continue;
+            } else{
                 var match = 0;
                 var n;
-                //searching for mathcing pure s block
                 while (true) {
                     n = data.charCodeAt(0);
                     if (0 == data.indexOf(str_quote)) {
@@ -317,27 +282,23 @@ function jjdecode(t) {
                         jjvalue+='\\'
                         match += 1;
                         continue;
-                    } else if (0 == data.indexOf(str_end)) //reached end off S block ? +
-                    {
+                    } else if (0 == data.indexOf(str_end)){
                         if (match == 0) {
                             alert("+ no match S block: " + data);
                             return;
                         }
                         data = data.substr(str_end.length);
-                        break; //step out of the while loop
-                    } else if (0 == data.indexOf(str_upper)) //r4 reached end off S block ? - check if "R n >= 128
-                    {
+                        break;
+                    } else if (0 == data.indexOf(str_upper)){
                         if (match == 0) {
                             alert("no match S block n>128: " + data);
                             return;
                         }
-                        data = data.substr(str_upper.length); //skip sig
+                        data = data.substr(str_upper.length);
                         var ch_str = "";
                         var ch_lotux = "";
-                        for (j = 0; j < 10; j++) //shouldn't be more than 10 hex chars
-                        {
-                            if (j > 1) //lotu check
-                            {
+                        for (j = 0; j < 10; j++) {
+                            if (j > 1) {
                                 if (0 == data.indexOf(str_l)) {
                                     data = data.substr(str_l.length);
                                     ch_lotux = "l";
@@ -356,11 +317,9 @@ function jjdecode(t) {
                                     break;
                                 }
                             }
-                            //gv + "."+b[ c ]               
                             if (0 == data.indexOf(gvsig)) {
-                                data = data.substr(gvsig.length); //skip gvsig
-                                for (k = 0; k < b.length; k++) //for every entry in b
-                                {
+                                data = data.substr(gvsig.length);
+                                for (k = 0; k < b.length; k++){
                                     if (0 == data.indexOf(b[k])) {
                                         data = data.substr(b[k].length);
                                         ch_str += k.toString(16) + "";
@@ -368,26 +327,23 @@ function jjdecode(t) {
                                     }
                                 }
                             } else {
-                                break; //done
+                                break;
                             }
                         }
                         jjvalue+=String.fromCharCode(parseInt(ch_str, 16))
-                        break; //step out of the while loop
-                    } else if (0 == data.indexOf(str_lower)) //r3 check if "R // n < 128
-                    {
+                        break;
+                    } else if (0 == data.indexOf(str_lower)){
                         if (match == 0) {
                             alert("no match S block n<128: " + data);
                             return;
                         }
-                        data = data.substr(str_lower.length); //skip sig
+                        data = data.substr(str_lower.length);
                         var ch_str = "";
                         var ch_lotux = ""
                         var temp = "";
                         var b_checkR1 = 0;
-                        for (j = 0; j < 3; j++) //shouldn't be more than 3 octal chars
-                        {
-                            if (j > 1) //lotu check
-                            {
+                        for (j = 0; j < 3; j++) {
+                            if (j > 1){
                                 if (0 == data.indexOf(str_l)) {
                                     data = data.substr(str_l.length);
                                     ch_lotux = "l";
@@ -405,28 +361,24 @@ function jjdecode(t) {
                                     ch_lotux = "u";
                                     break;
                                 }
-                            }
-                            //gv + "."+b[ c ]                           
+                            }                
                             if (0 == data.indexOf(gvsig)) {
                                 temp = data.substr(gvsig.length);
-                                for (k = 0; k < 8; k++) //for every entry in b octal
-                                {
+                                for (k = 0; k < 8; k++) {
                                     if (0 == temp.indexOf(b[k])) {
                                         if (parseInt(ch_str + k + "", 8) > 128) {
                                             b_checkR1 = 1;
                                             break;
                                         }
                                         ch_str += k + "";
-                                        data = data.substr(gvsig.length); //skip gvsig
+                                        data = data.substr(gvsig.length);
                                         data = data.substr(b[k].length);
                                         break;
                                     }
                                 }
                                 if (1 == b_checkR1) {
-                                    if (0 == data.indexOf(str_hex)) //0123456789abcdef
-                                    {
+                                    if (0 == data.indexOf(str_hex)){
                                         data = data.substr(str_hex.length);
-                                        //check every element of hex decode string for a match 
                                         var i = 0;
                                         for (i = 0; i < b.length; i++) {
                                             if (0 == data.indexOf(b[i])) {
@@ -438,11 +390,11 @@ function jjdecode(t) {
                                     }
                                 }
                             } else {
-                                break; //done
+                                break;
                             }
                         }
                         jjvalue+=String.fromCharCode(parseInt(ch_str, 8)) + ch_lotux
-                        break; //step out of the while loop
+                        break;
                     } else if ((0x21 <= n && n <= 0x2f) || (0x3A <= n && n <= 0x40) || (0x5b <= n && n <= 0x60) || (0x7b <= n && n <= 0x7f)) {
                         jjvalue+=data.charAt(0)
                         data = data.substr(1);
