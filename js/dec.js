@@ -38,27 +38,27 @@ function decsojson4(jsf) {
 function obdec_default(jsf,thr1=false,throwederror='') {
     var ojs=jsf,spljs;
     try{
-        function sandbox(cjs,bjs,name) {
-        function th(js,n){
-           var s=js.split("")
-           if(js.indexOf(n)==-1){result=js;return;}
+        function sandbox() {
+        function th(){
+           var s=head2.split("")
+           if(head2.indexOf(head1)==-1){return;}
            else{
-               var c=js.substring(js.indexOf(n),js.length);
+               var c=head2.substring(head2.indexOf(head1),head2.length);
                 var jstmp=c.substring(0,c.indexOf("')")+2)
                 try{eval("var countn="+jstmp)}
                 catch(e){var jstmp2=c.substring(c.indexOf("')")+2,c.length);jstmp=jstmp+jstmp2.substring(0,jstmp2.indexOf("')")+2);eval("var countn="+jstmp);}
-                js=js.replace(jstmp,"'"+countn.replace(/\n/g,'\\n').replace(/'/g,'\'')+"'")
-               th(js,n)
+                head2=head2.replace(jstmp,"'"+countn.replace(/\n/g,'\\n').replace(/'/g,'\\\'')+"'")
+               th()
            }
         }
-            eval(cjs);
-            th(bjs,name);return;
+            eval(head3);
+            th();return;
         }
         if(jsf.indexOf("));var")!=-1){var indf=jsf.indexOf("));var");spljs='));var'}
         else if(jsf.indexOf(")); var")!=-1){var indf=jsf.indexOf(")); var");spljs=')); var'}
         else if(jsf.indexOf("));\nvar")!=-1){var indf=jsf.indexOf("));\nvar");spljs='));\nvar'}
         else{throw 'Cannot Found function.'}
-        var head1,result,head2=jsf.substring(indf+3,jsf.length),head3=head2.substring(head2.indexOf(")")+1,head2.length).split(""),c=0,pos,ch=-1;
+        var head1,head2=jsf.substring(indf+3,jsf.length),head3=head2.substring(head2.indexOf(")")+1,head2.length).split(""),c=0,pos,ch=-1;
         for(var i=0;i<head3.length;i++){
             if(head3[i]=="{"){c++;if(ch==-1){ch=0}}
             else if(head3[i]=="}"){c--}
@@ -67,8 +67,8 @@ function obdec_default(jsf,thr1=false,throwederror='') {
         head1=head2.substring(4,head2.indexOf("=")).replace(/ /g,'');
         head3=jsf.substring(0,pos+head2.indexOf(")")+6+indf);
         head2=jsf.substring(pos+head2.indexOf(")")+6+indf,jsf.length)
-        sandbox(head3,head2,head1)
-        return result
+        sandbox(head2)
+        return head2
     }catch(e){
         if(thr1==false){return obdec_default(ojs.replace(spljs,'));\tvar'),true,e);}
         else{return 'Failed!\nthrowed1:'+throwederror+'\nthrowed2:'+e}
@@ -89,45 +89,28 @@ function dec_jsjiamiv6_default(jsf) {
 }
 function dec_list(jsf){
     if(!((jsf.indexOf(",")!=-1)&&(jsf.indexOf("=")!=-1)&&(jsf.indexOf("[")!=-1)&&(jsf.indexOf("]")!=-1)&&(jsf.indexOf("var ")!=-1))){throw 'Type Error!'}
-    var result,name,jsfile;
-	function th(js,n){
-    	var s=js.split("")
-    	if(js.indexOf(n)==-1){result=js;return;}
+    var result,name;
+	function th(){
+    	var s=result.split("")
+    	if(result.indexOf(name)==-1){return;}
     	else{
-            var c=js.substring(js.indexOf(n),js.length);
+            var c=result.substring(result.indexOf(name),result.length);
             var jstmp=c.substring(0,c.indexOf("]")+1)
     	    eval("var countn="+jstmp)
-	        js=js.replace(jstmp,"'"+countn.replace(/\n/g,'\\n')+"'")
-        	th(js,n)
+	        result=result.replace(jstmp,"'"+countn.replace(/\n/g,'\\n').replace(/'/g,'\\\'')+"'")
+        	th()
     	}
 	}
     name=jsf.substring(4,jsf.indexOf("="))
     eval(jsf.substring(0,jsf.indexOf(";")+1))
-    jsfile=jsf.substring(jsf.indexOf(";")+1,jsf.length)
-    th(jsfile,name)
+    result=jsf.substring(jsf.indexOf(";")+1,jsf.length)
+    th()
     return result
 }
 function decsojsonp(jsf) {
-    function th(js,n,sz){
-        var s=js.split("")
-        if(js.indexOf(n)==-1){result=js;return}
-        else{
-            var c=js.substring(js.indexOf(n)+n.length,js.length);
-            var jstmp=c.substring(0,c.indexOf("]")+1)
-            eval("var countn=sz"+jstmp)
-            js=js.replace(n+jstmp,"'"+countn.replace(/\n/g,'\\n').replace(/'/g,'\'')+"'")
-            th(js,n,sz)
-        }
-    }
-    var head="var __encode ='sojson.com",result;
-    if(jsf.indexOf(head)==-1){return "Failed!\nGiven code is not encoded as Sojson Primium."}
-    jsf=jsf.substring(327,jsf.lastIndexOf("(function(_0x"))
-    var sz=[],szn=jsf.substring(4,jsf.indexOf("="))
-    eval(jsf.substring(0,jsf.indexOf(";")))
-    var jsfi=jsf.substring(jsf.indexOf(";")+1,jsf.length)
-    eval("for(var i=0;i<"+szn+".length-5;i++){sz[i]="+szn+"[i]}")
-    th(jsfi,szn,sz)
-    return result;
+    if(jsf.indexOf("var __encode ='sojson.com")==-1){return "Failed!\nGiven code is not encoded as Sojson Primium."}
+    jsf=jsf.substring(jsf.indexOf(');var _')+2,jsf.lastIndexOf("(function(_0x"))
+    return dec_list(jsf);
 }
 function aadecode(text){
     var evalPreamble = "(\uFF9F\u0414\uFF9F) ['_'] ( (\uFF9F\u0414\uFF9F) ['_'] (";
@@ -135,16 +118,9 @@ function aadecode(text){
     var evalPostamble = ") (\uFF9F\u0398\uFF9F)) ('_');";
     var decodePostamble = ") ());";
     text = text.replace(/^\s*/, "").replace(/\s*$/, "");
-    if (/^\s*$/.test(text)) {
-        return "";
-    }
-    if (text.lastIndexOf(evalPreamble) < 0) {
-        return "Failed!\nGiven code is not encoded as aaencode.";
-    }
-    if (text.lastIndexOf(evalPostamble) != text.length - evalPostamble.length) {
-        return "Failed!\nGiven code is not encoded as aaencode.";
-    }
-
+    if (/^\s*$/.test(text)){return "";}
+    if (text.lastIndexOf(evalPreamble) < 0) {return "Failed!\nGiven code is not encoded as aaencode.";}
+    if (text.lastIndexOf(evalPostamble) != text.length - evalPostamble.length) {return "Failed!\nGiven code is not encoded as aaencode.";}
     var decodingScript = text.replace(evalPreamble, decodePreamble).replace(evalPostamble, decodePostamble);
     return eval(decodingScript);
 }
@@ -152,18 +128,15 @@ function jjdecode(t) {
     //clean it
     var jjvalue=""
     t.replace(/^\s+|\s+$/g, "");
-
     var startpos;
     var endpos;
     var gv;
     var gvl;
-
     if (t.indexOf("\"\'\\\"+\'+\",") == 0) //palindrome check
     {
         //locate jjcode
         startpos = t.indexOf('$$+"\\""+') + 8;
         endpos = t.indexOf('"\\"")())()');
-
         //get gv
         gv = t.substring((t.indexOf('"\'\\"+\'+",') + 9), t.indexOf("=~[]"));
         gvl = gv.length;
@@ -171,44 +144,32 @@ function jjdecode(t) {
         //get gv
         gv = t.substr(0, t.indexOf("="));
         gvl = gv.length;
-
         //locate jjcode
         startpos = t.indexOf('"\\""+') + 5;
         endpos = t.indexOf('"\\"")())()');
     }
-
     if (startpos == endpos) {
         alert("No data !");
         return;
     }
-
     //start decoding
     var data = t.substring(startpos, endpos);
-
     //hex decode string
     var b = ["___+", "__$+", "_$_+", "_$$+", "$__+", "$_$+", "$$_+", "$$$+", "$___+", "$__$+", "$_$_+", "$_$$+", "$$__+", "$$_$+", "$$$_+", "$$$$+"];
-
     //lotu
     var str_l = "(![]+\"\")[" + gv + "._$_]+";
     var str_o = gv + "._$+";
     var str_t = gv + ".__+";
     var str_u = gv + "._+";
-
     //0123456789abcdef
     var str_hex = gv + ".";
-
-    //s
     var str_s = '"';
     var gvsig = gv + ".";
-
     var str_quote = '\\\\\\"';
     var str_slash = '\\\\\\\\';
-
     var str_lower = "\\\\\"+";
     var str_upper = "\\\\\"+" + gv + "._+";
-
     var str_end = '"+'; //end of s loop
-
     while (data != "") {
         //l o t u
         if (0 == data.indexOf(str_l)) {
@@ -228,11 +189,9 @@ function jjdecode(t) {
             jjvalue+="u"
             continue;
         }
-
         //0123456789abcdef
         if (0 == data.indexOf(str_hex)) {
             data = data.substr(str_hex.length);
-
             //check every element of hex decode string for a match 
             var i = 0;
             for (i = 0; i < b.length; i++) {
@@ -244,11 +203,9 @@ function jjdecode(t) {
             }
             continue;
         }
-
         //start of s block
         if (0 == data.indexOf(str_s)) {
             data = data.substr(str_s.length);
-
             //check if "R
             if (0 == data.indexOf(str_upper)) // r4 n >= 128
             {
@@ -271,7 +228,6 @@ function jjdecode(t) {
                         break; //done
                     }
                 }
-
                 jjvalue+=String.fromCharCode(parseInt(ch_str, 16))
                 continue;
             } else if (0 == data.indexOf(str_lower)) //r3 check if "R // n < 128
@@ -304,7 +260,6 @@ function jjdecode(t) {
                             break;
                         }
                     }
-
                     //gv + "."+b[ c ]                           
                     if (0 == data.indexOf(gvsig)) {
                         temp = data.substr(gvsig.length);
@@ -315,19 +270,16 @@ function jjdecode(t) {
                                     b_checkR1 = 1;
                                     break;
                                 }
-
                                 ch_str += k + "";
                                 data = data.substr(gvsig.length); //skip gvsig
                                 data = data.substr(b[k].length);
                                 break;
                             }
                         }
-
                         if (1 == b_checkR1) {
                             if (0 == data.indexOf(str_hex)) //0123456789abcdef
                             {
                                 data = data.substr(str_hex.length);
-
                                 //check every element of hex decode string for a match 
                                 var i = 0;
                                 for (i = 0; i < b.length; i++) {
@@ -337,7 +289,6 @@ function jjdecode(t) {
                                         break;
                                     }
                                 }
-
                                 break;
                             }
                         }
@@ -345,17 +296,14 @@ function jjdecode(t) {
                         break; //done
                     }
                 }
-
                 jjvalue+=String.fromCharCode(parseInt(ch_str, 8)) + ch_lotux
                 continue; //step out of the while loop
             } else //"S ----> "SR or "S+
             {
-
                 // if there is, loop s until R 0r +
                 // if there is no matching s block, throw error
                 var match = 0;
                 var n;
-
                 //searching for mathcing pure s block
                 while (true) {
                     n = data.charCodeAt(0);
@@ -376,7 +324,6 @@ function jjdecode(t) {
                             return;
                         }
                         data = data.substr(str_end.length);
-
                         break; //step out of the while loop
                     } else if (0 == data.indexOf(str_upper)) //r4 reached end off S block ? - check if "R n >= 128
                     {
@@ -384,13 +331,11 @@ function jjdecode(t) {
                             alert("no match S block n>128: " + data);
                             return;
                         }
-
                         data = data.substr(str_upper.length); //skip sig
                         var ch_str = "";
                         var ch_lotux = "";
                         for (j = 0; j < 10; j++) //shouldn't be more than 10 hex chars
                         {
-
                             if (j > 1) //lotu check
                             {
                                 if (0 == data.indexOf(str_l)) {
@@ -411,7 +356,6 @@ function jjdecode(t) {
                                     break;
                                 }
                             }
-
                             //gv + "."+b[ c ]               
                             if (0 == data.indexOf(gvsig)) {
                                 data = data.substr(gvsig.length); //skip gvsig
@@ -427,7 +371,6 @@ function jjdecode(t) {
                                 break; //done
                             }
                         }
-
                         jjvalue+=String.fromCharCode(parseInt(ch_str, 16))
                         break; //step out of the while loop
                     } else if (0 == data.indexOf(str_lower)) //r3 check if "R // n < 128
@@ -436,7 +379,6 @@ function jjdecode(t) {
                             alert("no match S block n<128: " + data);
                             return;
                         }
-
                         data = data.substr(str_lower.length); //skip sig
                         var ch_str = "";
                         var ch_lotux = ""
@@ -444,7 +386,6 @@ function jjdecode(t) {
                         var b_checkR1 = 0;
                         for (j = 0; j < 3; j++) //shouldn't be more than 3 octal chars
                         {
-
                             if (j > 1) //lotu check
                             {
                                 if (0 == data.indexOf(str_l)) {
@@ -465,7 +406,6 @@ function jjdecode(t) {
                                     break;
                                 }
                             }
-
                             //gv + "."+b[ c ]                           
                             if (0 == data.indexOf(gvsig)) {
                                 temp = data.substr(gvsig.length);
@@ -476,19 +416,16 @@ function jjdecode(t) {
                                             b_checkR1 = 1;
                                             break;
                                         }
-
                                         ch_str += k + "";
                                         data = data.substr(gvsig.length); //skip gvsig
                                         data = data.substr(b[k].length);
                                         break;
                                     }
                                 }
-
                                 if (1 == b_checkR1) {
                                     if (0 == data.indexOf(str_hex)) //0123456789abcdef
                                     {
                                         data = data.substr(str_hex.length);
-
                                         //check every element of hex decode string for a match 
                                         var i = 0;
                                         for (i = 0; i < b.length; i++) {
@@ -504,7 +441,6 @@ function jjdecode(t) {
                                 break; //done
                             }
                         }
-
                         jjvalue+=String.fromCharCode(parseInt(ch_str, 8)) + ch_lotux
                         break; //step out of the while loop
                     } else if ((0x21 <= n && n <= 0x2f) || (0x3A <= n && n <= 0x40) || (0x5b <= n && n <= 0x60) || (0x7b <= n && n <= 0x7f)) {
@@ -512,53 +448,44 @@ function jjdecode(t) {
                         data = data.substr(1);
                         match += 1;
                     }
-
                 }
                 continue;
             }
         }
         break;
     }
-if(jjvalue!=""){return jjvalue;}
-else{return "Failed!\nGiven code is not encoded as jjencode."}
+    if(jjvalue!=""){return jjvalue;}
+    else{return "Failed!\nGiven code is not encoded as jjencode."}
 }
 function decjsf(js) {
     function patternCreator(prefix, postfix) {
         replacedPrefix = prefix.replace(/[\[\]\(\)\+\!]/g, '\\$&');
         replacedPostfix = postfix.replace(/[\[\]\(\)\+\!]/g, '\\$&');
-
         return replacedPrefix + '(.*)' + replacedPostfix;
     }
-
     function isMatching(string, pattern) {
         var result = string.match(new RegExp(pattern));
         if (result) return result[1];
-
         return null;
     }
     function decodejsf() {
         var prefix = '[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(!+[]+!+[]+!+[]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(+![]+([]+[])[([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(+![]+[![]]+([]+[])[([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]])+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]])()(';
         var postfix = ')';
         var result = isMatching(code, patternCreator(prefix, postfix));
-
         if (result) {
             code = eval(result);
             return;
         }
-
         prefix = '[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]](';
         postfix = ')()';
         result = isMatching(code, patternCreator(prefix, postfix));
-
         if (result) {
             code = eval(result);
             return;
         }
-
         prefix = '[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]](';
         postfix = ')()';
         result = isMatching(code, patternCreator(prefix, postfix));
-
         if (result) {
             code = eval(result);
             return;
